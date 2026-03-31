@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.s1g1.kantask.database.KanbanStatus
 import com.s1g1.kantask.database.TaskRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -56,14 +57,54 @@ class TaskViewModel(
             }
             is TaskEvent.ToggleTaskStatus -> {
                 viewModelScope.launch {
-                    repository.upsertTask(
-                        taskEntity = event.taskEntity.copy(
-                            isDone = !event.taskEntity.isDone
-                        )
-                    )
+                    if (event.taskEntity.isDone){
+                        repository.upsertTask(event.taskEntity.copy(
+                            isDone = false,
+                            kanbanStatus = KanbanStatus.Todo
+                        ))
+                    } else {
+                        repository.upsertTask(event.taskEntity.copy(
+                            isDone = true,
+                            kanbanStatus = KanbanStatus.Done
+                        ))
+                    }
                 }
             }
-            /* TODO SHOW + HIDE EDIT DIALOG */
+
+            is TaskEvent.UpdateTaskKanbanStatus -> {
+                viewModelScope.launch{
+                    if(event.taskEntity.isDone){
+                        when(event.newKanbanStatus){
+                            KanbanStatus.Done -> {
+                                repository.upsertTask(event.taskEntity.copy(
+                                    kanbanStatus = event.newKanbanStatus,
+                                ))
+                            }
+                            KanbanStatus.InProgress, KanbanStatus.Todo -> {
+                                repository.upsertTask(event.taskEntity.copy(
+                                    kanbanStatus = event.newKanbanStatus,
+                                    isDone = false
+                                ))
+                            }
+                        }
+                    } else {
+                        when(event.newKanbanStatus){
+                            KanbanStatus.Done -> {
+                                repository.upsertTask(event.taskEntity.copy(
+                                    kanbanStatus = event.newKanbanStatus,
+                                    isDone = true
+                                ))
+                            }
+                            KanbanStatus.InProgress, KanbanStatus.Todo  -> {
+                                repository.upsertTask(event.taskEntity.copy(
+                                    kanbanStatus = event.newKanbanStatus,
+                                ))
+                            }
+                        }
+                    }
+                }
+            }
+
             is TaskEvent.ShowEditDialog -> {
                 _state.update{
                     it.copy(taskToEdit = event.taskEntity, isEditTaskDialogVisible = true)
@@ -80,7 +121,6 @@ class TaskViewModel(
             TaskEvent.ToggleEditTaskDialog -> {
                 _state.value = _state.value.copy(isEditTaskDialogVisible = !_state.value.isEditTaskDialogVisible)
             }
-
 
         }
     }
