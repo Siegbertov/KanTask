@@ -1,10 +1,16 @@
 package com.s1g1.kantask
 
+import android.Manifest
+import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.compose.runtime.LaunchedEffect
 import com.s1g1.kantask.ui.MainNavGraph
 import com.s1g1.kantask.ui.theme.KanTaskTheme
 import com.s1g1.kantask.viewmodel.TaskViewModel
@@ -19,6 +25,22 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+
+            /* TODO REFACTOR PERMISSION ACCESS  */
+            val permissionLauncher = rememberLauncherForActivityResult(
+                contract = ActivityResultContracts.RequestPermission()
+            ) { isGranted ->
+                if (!isGranted) {
+                    Toast.makeText(this, "WONT WORK", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            LaunchedEffect(Unit) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                }
+            }
+
             KanTaskTheme {
                 MainNavGraph( tvm = tvm )
             }
