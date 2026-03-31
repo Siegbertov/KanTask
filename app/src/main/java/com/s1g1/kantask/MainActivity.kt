@@ -11,6 +11,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import com.s1g1.kantask.ui.MainNavGraph
 import com.s1g1.kantask.ui.theme.KanTaskTheme
 import com.s1g1.kantask.viewmodel.TaskViewModel
@@ -41,8 +45,13 @@ class MainActivity : ComponentActivity() {
                 }
             }
 
-            KanTaskTheme {
-                MainNavGraph( tvm = tvm )
+            var isDarkTheme by rememberSaveable { mutableStateOf(true) }
+            KanTaskTheme(darkTheme = isDarkTheme) {
+                MainNavGraph(
+                    tvm = tvm,
+                    isDarkTheme=isDarkTheme,
+                    onToggleThemeChange={isDarkTheme=!isDarkTheme}
+                    )
             }
         }
     }

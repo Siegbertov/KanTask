@@ -27,6 +27,8 @@ object Routes {
 @Composable
 fun MainNavGraph(
     tvm: TaskViewModel,
+    isDarkTheme: Boolean,
+    onToggleThemeChange: ()->Unit
 ){
     val uiState by tvm.state.collectAsStateWithLifecycle()
 
@@ -39,6 +41,8 @@ fun MainNavGraph(
         topBar={ KanTaskTopBar(
             navController = navController,
             currentRoute = currentRoute,
+            isDarkTheme=isDarkTheme,
+            onToggleThemeChange={onToggleThemeChange()},
             onPostponeClick = {tvm.onEvent(TaskEvent.PostponeUndoneFromPast(today = LocalDate.now()))},
             onTodayScroll = {tvm.onEvent(TaskEvent.SetToday)}
         ) },

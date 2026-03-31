@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DarkMode
+import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.Today
 import androidx.compose.material.icons.filled.Update
 import androidx.compose.material.icons.filled.ViewDay
@@ -32,6 +34,8 @@ fun KanTaskTopBar(
     currentRoute: String?,
     onPostponeClick:()->Unit,
     onTodayScroll:()->Unit,
+    isDarkTheme: Boolean,
+    onToggleThemeChange: ()->Unit
 ){
     CenterAlignedTopAppBar(
         modifier = Modifier.statusBarsPadding(),
@@ -52,6 +56,16 @@ fun KanTaskTopBar(
                     fontStyle = FontStyle.Italic
                 )
 
+            }
+        },
+        navigationIcon ={
+            IconButton(onClick={
+                onToggleThemeChange()
+            }){
+                Icon(
+                    imageVector = if(isDarkTheme) Icons.Default.LightMode else Icons.Default.DarkMode,
+                    contentDescription = null
+                )
             }
         },
         actions={
