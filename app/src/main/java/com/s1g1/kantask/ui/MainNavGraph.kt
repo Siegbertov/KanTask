@@ -39,7 +39,8 @@ fun MainNavGraph(
         topBar={ KanTaskTopBar(
             navController = navController,
             currentRoute = currentRoute,
-            onPostponeClick = {tvm.onEvent(TaskEvent.PostponeUndoneFromPast(today = LocalDate.now()))}
+            onPostponeClick = {tvm.onEvent(TaskEvent.PostponeUndoneFromPast(today = LocalDate.now()))},
+            onTodayScroll = {tvm.onEvent(TaskEvent.SetToday)}
         ) },
 
         snackbarHost = {

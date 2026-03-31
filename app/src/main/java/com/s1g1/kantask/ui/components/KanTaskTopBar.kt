@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Today
 import androidx.compose.material.icons.filled.Update
 import androidx.compose.material.icons.filled.ViewDay
 import androidx.compose.material.icons.filled.ViewKanban
@@ -30,6 +31,7 @@ fun KanTaskTopBar(
     navController: NavHostController,
     currentRoute: String?,
     onPostponeClick:()->Unit,
+    onTodayScroll:()->Unit,
 ){
     CenterAlignedTopAppBar(
         modifier = Modifier.statusBarsPadding(),
@@ -64,6 +66,13 @@ fun KanTaskTopBar(
                         }){
                             Icon(imageVector = Icons.Default.Update, contentDescription = null)
                         }
+
+                        IconButton(onClick = {
+                            onTodayScroll()
+                        }){
+                            Icon(imageVector = Icons.Default.Today, contentDescription = null)
+                        }
+
                         IconButton(onClick = {
                             navController.navigate(Routes.KANBANSCREEN)
                         }) {

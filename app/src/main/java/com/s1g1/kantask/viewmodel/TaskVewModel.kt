@@ -156,8 +156,7 @@ class TaskViewModel(
             }
 
             is TaskEvent.ShowEditDialog -> {
-                _state.update{
-                    it.copy(taskToEdit = event.taskEntity, isEditTaskDialogVisible = true)
+                _state.update{it.copy(taskToEdit = event.taskEntity, isEditTaskDialogVisible = true)
                 }
             }
             is TaskEvent.HideEditDialog -> {
@@ -165,13 +164,17 @@ class TaskViewModel(
             }
 
             TaskEvent.ToggleAddTaskDialog -> {
-                _state.value = _state.value.copy(isAddTaskDialogVisible = !_state.value.isAddTaskDialogVisible)
+                _state.update { it.copy(isAddTaskDialogVisible = !_state.value.isAddTaskDialogVisible) }
             }
 
             TaskEvent.ToggleEditTaskDialog -> {
-                _state.value = _state.value.copy(isEditTaskDialogVisible = !_state.value.isEditTaskDialogVisible)
+                _state.update { it.copy(isEditTaskDialogVisible = !_state.value.isEditTaskDialogVisible) }
             }
 
+            TaskEvent.SetToday -> {
+                isProgrammaticScroll = false
+                _state.update { it.copy(selectedDate = LocalDate.now()) }
+            }
         }
     }
 }

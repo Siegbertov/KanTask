@@ -17,5 +17,6 @@ sealed interface TaskEvent {
     data class PostponeUndoneFromPast(val today: LocalDate) : TaskEvent
     object ToggleAddTaskDialog : TaskEvent
     object ToggleEditTaskDialog : TaskEvent
+    object SetToday : TaskEvent
 
 }
