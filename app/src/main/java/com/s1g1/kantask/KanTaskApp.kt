@@ -1,12 +1,17 @@
 package com.s1g1.kantask
 
 import android.app.Application
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import android.os.Build
 import androidx.room.Room
 import com.s1g1.kantask.database.AppDatabase
 import com.s1g1.kantask.database.MIGRATION_1_2
 import com.s1g1.kantask.database.MIGRATION_2_3
 import com.s1g1.kantask.database.MIGRATION_3_4
 import com.s1g1.kantask.database.TaskRepository
+import com.s1g1.kantask.service.REMINDER_CHANNEL
 
 
 class KanTaskApp : Application(){
@@ -25,4 +30,24 @@ class KanTaskApp : Application(){
     }
 
     val repository by lazy { TaskRepository(dao = db.taskEntityDao()) }
+
+    override fun onCreate() {
+        super.onCreate()
+        createNotificationChannel()
+    }
+
+    private fun createNotificationChannel(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            val channelId = REMINDER_CHANNEL
+            val name = "Task Reminders"
+            val descriptionText = "Notifications for scheduled tasks"
+            val importance = NotificationManager.IMPORTANCE_HIGH
+
+            val channel = NotificationChannel(channelId, name, importance).apply {
+                description = descriptionText
+            }
+            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
 }

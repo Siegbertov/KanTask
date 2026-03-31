@@ -25,7 +25,6 @@ fun DayScreen(
     tvm: TaskViewModel,
     uiState: TaskState
 ) {
-    println("FIRST LINE OF DAYSCREEN")
     val pagerState = rememberPagerState(
         initialPage = tvm.dayCount,
         pageCount = { tvm.dayCount * 3 }
@@ -33,7 +32,7 @@ fun DayScreen(
 
     LaunchedEffect(pagerState.currentPage) {
         if (!tvm.isProgrammaticScroll) {
-            tvm.onEvent(TaskEvent.OnPageChanged(pagerState.currentPage)) /* TODO start - 365 */
+            tvm.onEvent(TaskEvent.OnPageChanged(pagerState.currentPage))
         }
     }
 
