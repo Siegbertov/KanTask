@@ -19,10 +19,24 @@ data class TaskEntity(
     val time: LocalTime?,
     val duration: Duration?,
 
-    val kanbanStatus: KanbanStatus = KanbanStatus.Todo
-//    val priority: Priority, // TODO: implement
+    val kanbanStatus: KanbanStatus = KanbanStatus.Todo,
+    val priority: Priority = Priority.None,
 //    val shouldNotify: Boolean = false, // TODO: implement
 )
+
+enum class Priority(
+    val count: Int,
+    val text: String,
+    val color: Color
+){
+    High(3, "High", Color(0xFFC00000)),
+    Medium(2, "Medium", Color(0xFFC0C000)),
+    Low(1, "Low", Color(0xFF00C000)),
+    None(0, "None", Color(0xFF8080FF));
+    companion object {
+        fun fromInt(count: Int) = entries.firstOrNull { it.count == count } ?: None
+    }
+}
 
 sealed class KanbanStatus(
     val name: String,

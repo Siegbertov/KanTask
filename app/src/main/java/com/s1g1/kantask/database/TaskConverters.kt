@@ -32,4 +32,11 @@ class TaskConverters {
     @TypeConverter
     fun toKanbanStatus(status: String) : KanbanStatus = KanbanStatus.fromString(status)
 
+    /* Priority */
+    @TypeConverter
+    fun fromPriority(priority: Priority) : Int = priority.count
+
+    @TypeConverter
+    fun toPriority(count: Int) : Priority = Priority.fromInt(count)
+
 }
