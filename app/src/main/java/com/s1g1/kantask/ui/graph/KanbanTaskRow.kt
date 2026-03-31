@@ -30,12 +30,14 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import com.s1g1.kantask.R
 import com.s1g1.kantask.database.KanbanStatus
 import com.s1g1.kantask.database.Priority
 import com.s1g1.kantask.database.TaskEntity
@@ -46,7 +48,7 @@ import kotlin.math.roundToInt
 
 @SuppressLint("ConfigurationScreenWidthHeight")
 @Composable
-fun KanbasTaskRow(
+fun KanbanTaskRow(
     task: TaskEntity,
     onRowClick: (String) -> Unit,
     onTaskDropped: (TaskEntity, KanbanStatus) -> Unit,
@@ -54,6 +56,7 @@ fun KanbasTaskRow(
     onHighlightRight: (Boolean) -> Unit
 ) {
     val cardShape = RoundedCornerShape(size = 16.dp)
+    val noDescription = stringResource(R.string.no_description_text)
     val currentColor = Priority.fromInt(task.priority.count).color
     val configuration = LocalConfiguration.current
     val screenWidthPx = with(LocalDensity.current){configuration.screenWidthDp.dp.toPx()}
@@ -78,7 +81,7 @@ fun KanbasTaskRow(
             .fillMaxWidth()
             .padding(4.dp)
             .clip(cardShape)
-            .clickable(onClick = { onRowClick(task.description?:"") } )
+            .clickable(onClick = { onRowClick(task.description?: noDescription)} )
             .pointerInput(Unit) {
                 detectDragGesturesAfterLongPress(
                     onDragStart = { isDragging = true },

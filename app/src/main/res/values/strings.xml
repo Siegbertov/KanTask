@@ -6,6 +6,8 @@
     <string name="not_implemented_screen_title">not implemented screen</string>
 
     <string name="hint_delete_task">LONG PRESS to DELETE TASK</string>
+    <string name="no_description_text">No description</string>
+
 
     <string name="button_text_ok">OK</string>
     <string name="button_text_cancel">CANCEL</string>
