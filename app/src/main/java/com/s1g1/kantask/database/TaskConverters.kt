@@ -25,4 +25,11 @@ class TaskConverters {
     @TypeConverter
     fun toDuration(value: Long?): Duration? = value?.let{Duration.ofMinutes(it)}
 
+    /* KanbanStatus */
+    @TypeConverter
+    fun fromKanbanStatus(kanbanStatus: KanbanStatus) : String = kanbanStatus.name
+
+    @TypeConverter
+    fun toKanbanStatus(status: String) : KanbanStatus = KanbanStatus.fromString(status)
+
 }

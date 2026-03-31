@@ -30,6 +30,7 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -51,10 +52,12 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.s1g1.kantask.R
+import com.s1g1.kantask.database.KanbanStatus
 import com.s1g1.kantask.database.TaskEntity
 import kotlinx.coroutines.delay
 import java.time.Duration
 import java.time.LocalTime
+import kotlin.collections.copy
 
 
 @Composable
@@ -149,9 +152,33 @@ fun DayTaskRow(
                         onDeleteShortClick = {showDeleteHint(context = currentContext, text = hint)},
                         onDeleteLongClick = {isVisible=false;showHiddenButtons=!showHiddenButtons}
                     )
+                } else {
+                    KanbanStatusLabelComponent(
+                        modifier = Modifier.padding(4.dp).align(Alignment.TopEnd),
+                        kanbanStatus = taskEnt.kanbanStatus
+                    )
                 }
             }
         }
+    }
+}
+
+@Composable
+fun KanbanStatusLabelComponent(
+    modifier: Modifier,
+    kanbanStatus: KanbanStatus
+) {
+    Surface(
+        modifier = modifier,
+        shape = RoundedCornerShape(4.dp),
+        color = kanbanStatus.color.copy(alpha=0.75f)
+    ) {
+        Text(
+            text = kanbanStatus.name,
+            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+            style = MaterialTheme.typography.labelSmall,
+            color = Color.White
+        )
     }
 }
 

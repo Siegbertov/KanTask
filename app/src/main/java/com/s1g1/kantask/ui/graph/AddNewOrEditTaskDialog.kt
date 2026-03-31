@@ -55,6 +55,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.s1g1.kantask.R
+import com.s1g1.kantask.database.KanbanStatus
 import com.s1g1.kantask.database.TaskEntity
 import kotlinx.coroutines.delay
 import java.time.Duration
@@ -78,6 +79,8 @@ data class TaskFormState(
     val timePicked: Boolean = false,
     val timeH: Int = 0,
     val timeM: Int = 0,
+
+    val kanbanStatus: KanbanStatus = KanbanStatus.Todo
 ){
     fun fromTask(taskEntity: TaskEntity) : TaskFormState{
         return this.copy(
@@ -88,6 +91,8 @@ data class TaskFormState(
             timeH = taskEntity.time?.hour ?: 0,
             timeM = taskEntity.time?.minute ?: 0,
             timePicked = taskEntity.time!=null,
+
+            kanbanStatus = taskEntity.kanbanStatus
         )
     }
 }
@@ -191,6 +196,7 @@ fun AddNewOrEditTaskDialog(
                             day = fromMillisToLocalDate(formState.dateMillis),
                             time = if(formState.timePicked){LocalTime.of(timePickerState.hour, timePickerState.minute)}else{null},
                             duration = if(formState.duration.isNotEmpty() && formState.duration.all { it.isDigit() }){Duration.ofMinutes(formState.duration.toLong())}else{null},
+                            kanbanStatus = formState.kanbanStatus
                         )
                     )
                     onDismiss()
