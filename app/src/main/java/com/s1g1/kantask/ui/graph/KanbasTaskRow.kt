@@ -3,6 +3,7 @@ package com.s1g1.kantask.ui.graph
 import android.annotation.SuppressLint
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
@@ -36,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import com.s1g1.kantask.database.KanbanStatus
+import com.s1g1.kantask.database.Priority
 import com.s1g1.kantask.database.TaskEntity
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -52,6 +54,7 @@ fun KanbasTaskRow(
     onHighlightRight: (Boolean) -> Unit
 ) {
     val cardShape = RoundedCornerShape(size = 16.dp)
+    val currentColor = Priority.fromInt(task.priority.count).color
     val configuration = LocalConfiguration.current
     val screenWidthPx = with(LocalDensity.current){configuration.screenWidthDp.dp.toPx()}
     val pageVisibleWidth = screenWidthPx - with(LocalDensity.current) { 64.dp.toPx() }
@@ -115,12 +118,14 @@ fun KanbasTaskRow(
                     }
                 )
             }
+            .background(if (isDragging) currentColor.copy(alpha = 0.25f) else currentColor.copy(alpha = 0.1f))
             .border(width = 2.dp,color = MaterialTheme.colorScheme.outline,shape = cardShape)
             .padding(20.dp)
     ){
         Text(
             text=task.title,
             fontSize = 14.sp,
+            color= currentColor,
             fontWeight = FontWeight.Black
         )
         Column(
