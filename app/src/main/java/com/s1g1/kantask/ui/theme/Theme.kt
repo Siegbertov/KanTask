@@ -1,6 +1,5 @@
 package com.s1g1.kantask.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme

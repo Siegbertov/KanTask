@@ -11,10 +11,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.s1g1.kantask.R
+import com.s1g1.kantask.viewmodel.TaskState
+import com.s1g1.kantask.viewmodel.TaskViewModel
 
 @Composable
 fun KanbanScreen(
     innerPadding: PaddingValues,
+    tvm: TaskViewModel,
+    uiState: TaskState
 ) {
     Column(
         verticalArrangement = Arrangement.Center,

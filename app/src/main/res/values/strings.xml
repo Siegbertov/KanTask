@@ -5,4 +5,24 @@
     <string name="kanban_screen_title">kanban screen</string>
     <string name="not_implemented_screen_title">not implemented screen</string>
 
+    <string name="hint_delete_task">LONG PRESS to DELETE TASK</string>
+
+    <string name="button_text_ok">OK</string>
+    <string name="button_text_cancel">CANCEL</string>
+    <string name="button_text_reset">RESET</string>
+    <string name="button_text_add">ADD</string>
+    <string name="button_text_edit">EDIT</string>
+
+    <string name="title_add">ADD TASK</string>
+    <string name="title_edit">EDIT TASK</string>
+
+    <string name="title_field_label">Title</string>
+    <string name="title_field_placeholder">must have</string>
+
+    <string name="duration_field_label">Duration</string>
+    <string name="duration_field_placeholder">optional</string>
+
+    <string name="description_field_label">Description</string>
+    <string name="description_field_placeholder">optional</string>
+
 </resources>

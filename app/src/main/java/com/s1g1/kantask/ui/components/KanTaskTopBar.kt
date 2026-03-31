@@ -11,7 +11,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -19,17 +18,15 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.currentBackStackEntryAsState
 import com.s1g1.kantask.R
 import com.s1g1.kantask.ui.Routes
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun KanTaskTopBar(
-    navController: NavHostController
+    navController: NavHostController,
+    currentRoute: String?
 ){
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.destination?.route
     CenterAlignedTopAppBar(
         modifier = Modifier.statusBarsPadding(),
         title={
@@ -39,23 +36,6 @@ fun KanTaskTopBar(
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
                 )
-//                when(currentRoute){
-//                    Routes.DAYSCREEN -> {
-//                        Text(
-//                            text="(${stringResource(R.string.day_screen_title)})",
-//                            fontSize = 12.sp,
-//                            fontStyle = FontStyle.Italic
-//                            )
-//                    }
-//                    Routes.KANBANSCREEN -> {
-//                        Text(
-//                            text="(${stringResource(R.string.kanban_screen_title)})",
-//                            fontSize = 12.sp,
-//                            fontStyle = FontStyle.Italic
-//                            )
-//                    }
-//                }
-
                 Text(
                     text= when(currentRoute){
                         Routes.DAYSCREEN -> {"(${stringResource(R.string.day_screen_title)})"}
