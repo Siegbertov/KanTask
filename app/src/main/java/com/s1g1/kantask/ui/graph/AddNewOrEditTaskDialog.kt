@@ -16,6 +16,8 @@ import androidx.compose.material.icons.filled.AlarmOn
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Description
+import androidx.compose.material.icons.filled.NotificationsActive
+import androidx.compose.material.icons.filled.NotificationsOff
 import androidx.compose.material.icons.filled.Task
 import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material3.AlertDialog
@@ -66,6 +68,7 @@ import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import kotlin.Boolean
 import kotlin.text.ifEmpty
 
 data class TaskFormState(
@@ -84,6 +87,7 @@ data class TaskFormState(
 
     val kanbanStatus: KanbanStatus = KanbanStatus.Todo,
     val priority: Priority = Priority.None,
+    val shouldNotify: Boolean = false
 ){
     fun fromTask(taskEntity: TaskEntity) : TaskFormState{
         return this.copy(
@@ -96,7 +100,8 @@ data class TaskFormState(
             timePicked = taskEntity.time!=null,
 
             kanbanStatus = taskEntity.kanbanStatus,
-            priority = taskEntity.priority
+            priority = taskEntity.priority,
+            shouldNotify = taskEntity.shouldNotify
         )
     }
 }
@@ -177,10 +182,15 @@ fun AddNewOrEditTaskDialog(
                     modifier = Modifier.fillMaxWidth(),
                     timePickerState = timePickerState,
                     isTimePicked = formState.timePicked,
+                    isNotifyChecked = formState.shouldNotify,
+                    onToggleNotify = { formState = formState.copy(shouldNotify = !formState.shouldNotify) },
                     onTogglePickedTime = {
                         formState = formState.copy(timePicked = !formState.timePicked)
                         timePickerState.hour = 0
                         timePickerState.minute = 0
+                        if(formState.shouldNotify && !formState.timePicked){
+                            formState = formState.copy(shouldNotify = false)
+                        }
                     },
                 )
 
@@ -207,7 +217,8 @@ fun AddNewOrEditTaskDialog(
                             time = if(formState.timePicked){LocalTime.of(timePickerState.hour, timePickerState.minute)}else{null},
                             duration = if(formState.duration.isNotEmpty() && formState.duration.all { it.isDigit() }){Duration.ofMinutes(formState.duration.toLong())}else{null},
                             kanbanStatus = formState.kanbanStatus,
-                            priority = formState.priority
+                            priority = formState.priority,
+                            shouldNotify = formState.shouldNotify,
                         )
                     )
                     onDismiss()
@@ -249,6 +260,8 @@ fun TimePickerComponent(
     modifier: Modifier = Modifier,
     timePickerState: TimePickerState,
     isTimePicked: Boolean,
+    isNotifyChecked: Boolean,
+    onToggleNotify:()->Unit,
     onTogglePickedTime:()->Unit,
 ) {
     Row(
@@ -294,6 +307,17 @@ fun TimePickerComponent(
                     fontWeight = FontWeight.Black,
                     modifier=Modifier
                         .padding(horizontal = 10.dp)
+                )
+                Switch(
+                    checked = isNotifyChecked,
+                    onCheckedChange = { onToggleNotify() },
+                    thumbContent = {
+                        if(isNotifyChecked){
+                            Icon(imageVector = Icons.Default.NotificationsActive, contentDescription = null)
+                        }else{
+                            Icon(imageVector = Icons.Default.NotificationsOff,contentDescription = null)
+                        }
+                    }
                 )
             }
             TimeInput(

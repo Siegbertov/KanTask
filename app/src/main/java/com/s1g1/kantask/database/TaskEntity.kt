@@ -21,7 +21,7 @@ data class TaskEntity(
 
     val kanbanStatus: KanbanStatus = KanbanStatus.Todo,
     val priority: Priority = Priority.None,
-//    val shouldNotify: Boolean = false, // TODO: implement
+    val shouldNotify: Boolean = false,
 )
 
 enum class Priority(
