@@ -27,6 +27,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -56,6 +57,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.s1g1.kantask.R
 import com.s1g1.kantask.database.KanbanStatus
+import com.s1g1.kantask.database.Priority
 import com.s1g1.kantask.database.TaskEntity
 import kotlinx.coroutines.delay
 import java.time.Duration
@@ -80,7 +82,8 @@ data class TaskFormState(
     val timeH: Int = 0,
     val timeM: Int = 0,
 
-    val kanbanStatus: KanbanStatus = KanbanStatus.Todo
+    val kanbanStatus: KanbanStatus = KanbanStatus.Todo,
+    val priority: Priority = Priority.None,
 ){
     fun fromTask(taskEntity: TaskEntity) : TaskFormState{
         return this.copy(
@@ -92,7 +95,8 @@ data class TaskFormState(
             timeM = taskEntity.time?.minute ?: 0,
             timePicked = taskEntity.time!=null,
 
-            kanbanStatus = taskEntity.kanbanStatus
+            kanbanStatus = taskEntity.kanbanStatus,
+            priority = taskEntity.priority
         )
     }
 }
@@ -163,6 +167,12 @@ fun AddNewOrEditTaskDialog(
                     onChanged = {formState = formState.copy(duration=it)}
                 )
 
+                TaskPriorityComponent(
+                    modifier = Modifier.fillMaxWidth(),
+                    currentPriority = formState.priority,
+                    onChanged = {formState = formState.copy(priority=it)}
+                )
+
                 TimePickerComponent(
                     modifier = Modifier.fillMaxWidth(),
                     timePickerState = timePickerState,
@@ -196,7 +206,8 @@ fun AddNewOrEditTaskDialog(
                             day = fromMillisToLocalDate(formState.dateMillis),
                             time = if(formState.timePicked){LocalTime.of(timePickerState.hour, timePickerState.minute)}else{null},
                             duration = if(formState.duration.isNotEmpty() && formState.duration.all { it.isDigit() }){Duration.ofMinutes(formState.duration.toLong())}else{null},
-                            kanbanStatus = formState.kanbanStatus
+                            kanbanStatus = formState.kanbanStatus,
+                            priority = formState.priority
                         )
                     )
                     onDismiss()
@@ -208,6 +219,28 @@ fun AddNewOrEditTaskDialog(
             }
         }
     )
+}
+
+@Composable
+fun TaskPriorityComponent(
+    modifier: Modifier,
+    currentPriority: Priority,
+    onChanged: (Priority) -> Unit
+) {
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.SpaceEvenly,
+    ){
+        Priority.entries.forEach { prior ->
+            Column(horizontalAlignment = Alignment.CenterHorizontally){
+                RadioButton(
+                    selected = currentPriority.count == prior.count,
+                    onClick = { onChanged(prior) },
+                )
+                Text(text=prior.text, color=prior.color)
+            }
+        }
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

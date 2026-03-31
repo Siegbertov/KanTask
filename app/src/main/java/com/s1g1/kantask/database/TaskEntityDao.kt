@@ -11,10 +11,10 @@ import java.time.LocalDate
 @Dao
 interface TaskEntityDao {
 
-    @Query("""SELECT * FROM $TASK_TABLE_NAME ORDER BY day ASC, isDone ASC, (time IS NULL) ASC, time ASC""")
+    @Query("""SELECT * FROM $TASK_TABLE_NAME ORDER BY day ASC, isDone ASC, (time IS NULL) ASC, time ASC, priority DESC""")
     fun getAllTasks(): Flow<List<TaskEntity>>
 
-    @Query("""SELECT * FROM $TASK_TABLE_NAME WHERE day=(:day) ORDER BY isDone ASC, (time IS NULL) ASC, time ASC""")
+    @Query("""SELECT * FROM $TASK_TABLE_NAME WHERE day=(:day) ORDER BY isDone ASC, (time IS NULL) ASC, time ASC, priority DESC""")
     fun getTasksByDay(day: LocalDate): Flow<List<TaskEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

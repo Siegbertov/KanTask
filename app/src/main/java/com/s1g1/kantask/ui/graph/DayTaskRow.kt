@@ -34,6 +34,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -57,8 +58,7 @@ import com.s1g1.kantask.database.TaskEntity
 import kotlinx.coroutines.delay
 import java.time.Duration
 import java.time.LocalTime
-import kotlin.collections.copy
-
+import com.s1g1.kantask.database.Priority
 
 @Composable
 fun DayTaskRow(
@@ -73,6 +73,9 @@ fun DayTaskRow(
     var showHiddenButtons by remember { mutableStateOf(false) }
     val animOffset = remember { Animatable(0f) }
     var isVisible by remember { mutableStateOf(true) }
+    val priorityColor by remember(taskEnt.priority) {
+        derivedStateOf { Priority.fromInt(taskEnt.priority.count).color }
+    }
     val cardShape = RoundedCornerShape(size = 16.dp)
 
     LaunchedEffect(showHiddenButtons) {
@@ -132,6 +135,7 @@ fun DayTaskRow(
                     TimeDurationComponent(
                         modifier = Modifier
                             .fillMaxHeight(),
+                        priorityColor = priorityColor,
                         possibleTime = taskEnt.time,
                         possibleDuration = taskEnt.duration,
                     )
@@ -140,6 +144,7 @@ fun DayTaskRow(
                             .fillMaxHeight()
                             .padding(horizontal = 8.dp, vertical = 16.dp)
                             .weight(1f),
+                        priorityColor = priorityColor,
                         title = taskEnt.title,
                         description = taskEnt.description,
                     )
@@ -232,6 +237,7 @@ fun HiddenButtonsComponent(
 @Composable
 fun TaskDataComponent(
     modifier: Modifier,
+    priorityColor: Color,
     title: String,
     description: String?
 ) {
@@ -243,6 +249,7 @@ fun TaskDataComponent(
             Text(
                 text=title,
                 fontWeight = FontWeight.Black,
+                color = priorityColor,
                 modifier = Modifier.align(Alignment.Center)
             )
         }
@@ -253,6 +260,7 @@ fun TaskDataComponent(
 @Composable
 fun TimeDurationComponent(
     modifier: Modifier,
+    priorityColor: Color,
     possibleTime: LocalTime?,
     possibleDuration: Duration?
 ) {
@@ -282,17 +290,19 @@ fun TimeDurationComponent(
                 if (possibleDuration != null) {
                     Text(
                         text = possibleTime.toString(),
+                        color = priorityColor,
                         fontWeight = FontWeight.Black,
                         modifier = Modifier.padding(vertical = 10.dp)
                     )
                     Spacer(modifier=Modifier.weight(1.0f))
                     Text(
                         text = possibleTime.plusMinutes(possibleDuration.toMinutes()).toString(),
+                        color = priorityColor,
                         fontWeight = FontWeight.Black,
                         modifier = Modifier.padding(vertical = 10.dp)
                     )
                 } else {
-                    Text(text = possibleTime.toString(),fontWeight = FontWeight.Black)
+                    Text(text = possibleTime.toString(), color = priorityColor, fontWeight = FontWeight.Black)
                 }
             }
         } else {
@@ -300,6 +310,7 @@ fun TimeDurationComponent(
                 Text(
                     text = "~${possibleDuration.toMinutes()}m~",
                     fontStyle = FontStyle.Italic,
+                    color = priorityColor,
                 )
             }
         }
