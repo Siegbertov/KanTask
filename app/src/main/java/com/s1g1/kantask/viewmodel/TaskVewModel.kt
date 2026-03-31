@@ -149,6 +149,12 @@ class TaskViewModel(
                 }
             }
 
+            is TaskEvent.PostponeUndoneFromPast -> {
+                viewModelScope.launch {
+                    repository.postponeUndoneFromPast(today = event.today)
+                }
+            }
+
             is TaskEvent.ShowEditDialog -> {
                 _state.update{
                     it.copy(taskToEdit = event.taskEntity, isEditTaskDialogVisible = true)

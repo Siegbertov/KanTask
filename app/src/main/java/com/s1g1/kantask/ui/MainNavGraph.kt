@@ -17,6 +17,7 @@ import com.s1g1.kantask.ui.graph.DayScreen
 import com.s1g1.kantask.ui.graph.KanbanScreen
 import com.s1g1.kantask.viewmodel.TaskEvent
 import com.s1g1.kantask.viewmodel.TaskViewModel
+import java.time.LocalDate
 
 object Routes {
     const val DAYSCREEN = "day_screen"
@@ -37,7 +38,8 @@ fun MainNavGraph(
     Scaffold(
         topBar={ KanTaskTopBar(
             navController = navController,
-            currentRoute = currentRoute
+            currentRoute = currentRoute,
+            onPostponeClick = {tvm.onEvent(TaskEvent.PostponeUndoneFromPast(today = LocalDate.now()))}
         ) },
 
         snackbarHost = {

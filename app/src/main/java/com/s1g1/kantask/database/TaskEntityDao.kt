@@ -23,4 +23,9 @@ interface TaskEntityDao {
     @Delete
     suspend fun deleteTask(taskEntity: TaskEntity)
 
+    @Query("""
+        UPDATE $TASK_TABLE_NAME 
+            SET day = :today  
+                WHERE day < :today AND isDone = 0""")
+    suspend fun postponeUndoneFromPast(today: LocalDate)
 }

@@ -15,4 +15,6 @@ class TaskRepository(private val dao: TaskEntityDao) {
 
     suspend fun deleteTask(taskEntity: TaskEntity) = dao.deleteTask(taskEntity = taskEntity)
 
+    suspend fun postponeUndoneFromPast(today: LocalDate) = dao.postponeUndoneFromPast(today=today)
+
 }

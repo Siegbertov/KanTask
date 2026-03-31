@@ -1,8 +1,11 @@
 package com.s1g1.kantask.ui.components
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Update
 import androidx.compose.material.icons.filled.ViewDay
 import androidx.compose.material.icons.filled.ViewKanban
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -25,7 +28,8 @@ import com.s1g1.kantask.ui.Routes
 @Composable
 fun KanTaskTopBar(
     navController: NavHostController,
-    currentRoute: String?
+    currentRoute: String?,
+    onPostponeClick:()->Unit,
 ){
     CenterAlignedTopAppBar(
         modifier = Modifier.statusBarsPadding(),
@@ -51,10 +55,20 @@ fun KanTaskTopBar(
         actions={
             when(currentRoute){
                 Routes.DAYSCREEN -> {
-                    IconButton(onClick = {
-                        navController.navigate(Routes.KANBANSCREEN)
-                    }) {
-                        Icon(imageVector = Icons.Default.ViewKanban, contentDescription = null)
+                    Row(
+                        horizontalArrangement = Arrangement.End,
+                        verticalAlignment = Alignment.CenterVertically
+                        ) {
+                        IconButton(onClick = {
+                            onPostponeClick()
+                        }){
+                            Icon(imageVector = Icons.Default.Update, contentDescription = null)
+                        }
+                        IconButton(onClick = {
+                            navController.navigate(Routes.KANBANSCREEN)
+                        }) {
+                            Icon(imageVector = Icons.Default.ViewKanban, contentDescription = null)
+                        }
                     }
                 }
                 Routes.KANBANSCREEN -> {
