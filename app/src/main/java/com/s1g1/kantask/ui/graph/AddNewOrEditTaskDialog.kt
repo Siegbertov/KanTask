@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.AlarmOn
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Description
+import androidx.compose.material.icons.filled.DoubleArrow
 import androidx.compose.material.icons.filled.NotificationsActive
 import androidx.compose.material.icons.filled.NotificationsOff
 import androidx.compose.material.icons.filled.Task
@@ -152,6 +153,10 @@ fun AddNewOrEditTaskDialog(
                     modifier = Modifier,
                     dateInMillis = formState.dateMillis,
                     onDateIconClick = {formState = formState.copy(dateShow = true)},
+                    onPostponeTomorrow = {
+                        val tomorrowMillis = LocalDate.now().plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
+                        formState = formState.copy(dateMillis = tomorrowMillis)
+                    }
                 )
 
                 TaskTitleField(
@@ -336,6 +341,7 @@ fun DatePickerComponent(
     modifier:Modifier = Modifier,
     dateInMillis: Long,
     onDateIconClick:()->Unit,
+    onPostponeTomorrow:()->Unit,
 ) {
     Row(
         modifier=modifier.fillMaxWidth().padding(vertical = 8.dp),
@@ -350,6 +356,7 @@ fun DatePickerComponent(
             modifier = Modifier.weight(1f)
         )
         IconButton(onClick={onDateIconClick()}) { Icon(imageVector = Icons.Default.CalendarMonth, contentDescription = null)}
+        IconButton(onClick={onPostponeTomorrow()}) { Icon(imageVector = Icons.Default.DoubleArrow, contentDescription = null)}
     }
 }
 
