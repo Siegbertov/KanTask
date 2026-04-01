@@ -248,7 +248,7 @@ fun TaskPriorityComponent(
                     selected = currentPriority.count == prior.count,
                     onClick = { onChanged(prior) },
                 )
-                Text(text=prior.text, color=prior.color)
+                Text(text=prior.text, color=prior.color, fontWeight = FontWeight.Black)
             }
         }
     }
