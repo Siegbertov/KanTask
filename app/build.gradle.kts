@@ -55,6 +55,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose) // VIEWMODEL
     implementation(libs.androidx.appcompat) // COMPATIBILITY
     implementation(libs.androidx.navigation.compose) // NAVIGATION
+    implementation(libs.androidx.compose.material3.adaptive.navigation.suite)  // NAVIGATION SUITE
     implementation(libs.androidx.compose.foundation) // COMPOSE CORE
     implementation(libs.androidx.compose.animation) // ANIMATION
     coreLibraryDesugaring(libs.desugar.jdk.libs) // COMPATIBILITY with LocalDate LocalTime
