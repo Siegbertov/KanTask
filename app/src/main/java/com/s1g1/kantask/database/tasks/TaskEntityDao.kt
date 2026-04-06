@@ -1,4 +1,4 @@
-package com.s1g1.kantask.database
+package com.s1g1.kantask.database.tasks
 
 import androidx.room.Dao
 import androidx.room.Delete

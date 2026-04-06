@@ -1,4 +1,4 @@
-package com.s1g1.kantask.database
+package com.s1g1.kantask.database.tasks
 
 import kotlinx.coroutines.flow.Flow
 import java.time.LocalDate

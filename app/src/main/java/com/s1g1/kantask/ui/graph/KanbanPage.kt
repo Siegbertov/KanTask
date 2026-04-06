@@ -40,8 +40,8 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.s1g1.kantask.database.KanbanStatus
-import com.s1g1.kantask.database.TaskEntity
+import com.s1g1.kantask.database.tasks.KanbanStatus
+import com.s1g1.kantask.database.tasks.TaskEntity
 import com.s1g1.kantask.viewmodel.TaskState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch

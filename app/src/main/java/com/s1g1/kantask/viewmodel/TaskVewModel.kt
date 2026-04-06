@@ -11,9 +11,9 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.s1g1.kantask.R
-import com.s1g1.kantask.database.KanbanStatus
-import com.s1g1.kantask.database.TaskEntity
-import com.s1g1.kantask.database.TaskRepository
+import com.s1g1.kantask.database.tasks.KanbanStatus
+import com.s1g1.kantask.database.tasks.TaskEntity
+import com.s1g1.kantask.database.tasks.TaskRepository
 import com.s1g1.kantask.service.TaskReminderWorker
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

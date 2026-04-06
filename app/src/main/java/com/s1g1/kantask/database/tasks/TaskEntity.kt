@@ -1,4 +1,4 @@
-package com.s1g1.kantask.database
+package com.s1g1.kantask.database.tasks
 
 import androidx.compose.ui.graphics.Color
 import androidx.room.Entity

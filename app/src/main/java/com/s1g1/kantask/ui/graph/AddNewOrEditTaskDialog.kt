@@ -59,9 +59,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.s1g1.kantask.R
-import com.s1g1.kantask.database.KanbanStatus
-import com.s1g1.kantask.database.Priority
-import com.s1g1.kantask.database.TaskEntity
+import com.s1g1.kantask.database.tasks.KanbanStatus
+import com.s1g1.kantask.database.tasks.Priority
+import com.s1g1.kantask.database.tasks.TaskEntity
 import kotlinx.coroutines.delay
 import java.time.Duration
 import java.time.Instant

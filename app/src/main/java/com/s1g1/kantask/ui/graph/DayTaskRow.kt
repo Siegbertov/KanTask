@@ -55,12 +55,12 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.s1g1.kantask.R
-import com.s1g1.kantask.database.KanbanStatus
-import com.s1g1.kantask.database.TaskEntity
+import com.s1g1.kantask.database.tasks.KanbanStatus
+import com.s1g1.kantask.database.tasks.TaskEntity
 import kotlinx.coroutines.delay
 import java.time.Duration
 import java.time.LocalTime
-import com.s1g1.kantask.database.Priority
+import com.s1g1.kantask.database.tasks.Priority
 
 @Composable
 fun DayTaskRow(

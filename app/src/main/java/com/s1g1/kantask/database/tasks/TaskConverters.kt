@@ -1,4 +1,4 @@
-package com.s1g1.kantask.database
+package com.s1g1.kantask.database.tasks
 
 import androidx.room.TypeConverter
 import java.time.Duration
@@ -11,19 +11,19 @@ class TaskConverters {
     @TypeConverter
     fun fromLocalDate(date: LocalDate?): Long? =  date?.toEpochDay()
     @TypeConverter
-    fun toLocalDate(value: Long?): LocalDate? = value?.let{LocalDate.ofEpochDay(it)}
+    fun toLocalDate(value: Long?): LocalDate? = value?.let{ LocalDate.ofEpochDay(it)}
 
     /* LocalTime */
     @TypeConverter
     fun fromLocalTime(time: LocalTime?): Long? = time?.toSecondOfDay()?.toLong()
     @TypeConverter
-    fun toLocalTime(value: Long?): LocalTime? = value?.let{LocalTime.ofSecondOfDay(it)}
+    fun toLocalTime(value: Long?): LocalTime? = value?.let{ LocalTime.ofSecondOfDay(it)}
 
     /* Duration */
     @TypeConverter
     fun fromDuration(duration: Duration?): Long? = duration?.toMinutes()
     @TypeConverter
-    fun toDuration(value: Long?): Duration? = value?.let{Duration.ofMinutes(it)}
+    fun toDuration(value: Long?): Duration? = value?.let{ Duration.ofMinutes(it)}
 
     /* KanbanStatus */
     @TypeConverter
