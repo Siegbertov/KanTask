@@ -1,4 +1,4 @@
-package com.s1g1.kantask.ui
+package com.s1g1.kantask.ui.graph
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable

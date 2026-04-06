@@ -1,4 +1,4 @@
-package com.s1g1.kantask.ui
+package com.s1g1.kantask.ui.graph
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,9 +12,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.s1g1.kantask.viewmodel.NoteEvent
-import com.s1g1.kantask.viewmodel.NoteState
-import com.s1g1.kantask.viewmodel.NoteViewModel
+import com.s1g1.kantask.viewmodel.note.NoteEvent
+import com.s1g1.kantask.viewmodel.note.NoteState
+import com.s1g1.kantask.viewmodel.note.NoteViewModel
 
 @Composable
 fun NoteScreen(
@@ -48,14 +48,14 @@ fun NoteScreen(
                             nvm.onEvent(NoteEvent.ToggleSelected(noteEntity = currNote))
                         },
                         onClickNote = { currNote ->
-                            if (isSelectionMode){
+                            if (isSelectionMode) {
                                 nvm.onEvent(NoteEvent.ToggleSelected(noteEntity = currNote))
                             } else {
                                 nvm.onEvent(NoteEvent.ShowEditDialog(noteEntity = currNote))
                             }
                         },
                         onLongClickNote = { currNote ->
-                            if (isSelectionMode){
+                            if (isSelectionMode) {
 
                             } else {
                                 nvm.onEvent(NoteEvent.ToggleSelected(noteEntity = currNote))
@@ -70,7 +70,7 @@ fun NoteScreen(
         AddNewOrEditNoteDialog(
             noteEntity = null,
             onFinalAction = { noteEntity ->
-                nvm.onEvent(NoteEvent.AddNote(noteEntity=noteEntity))
+                nvm.onEvent(NoteEvent.AddNote(noteEntity = noteEntity))
             },
             onDismiss = { nvm.onEvent(NoteEvent.ToggleAddNoteDialog) }
         )
@@ -79,7 +79,7 @@ fun NoteScreen(
         AddNewOrEditNoteDialog(
             noteEntity = uiNoteState.noteToEdit,
             onFinalAction = { noteEntity ->
-                nvm.onEvent(NoteEvent.UpdateNote(noteEntity=noteEntity))
+                nvm.onEvent(NoteEvent.UpdateNote(noteEntity = noteEntity))
             },
             onDismiss = { nvm.onEvent(NoteEvent.ToggleEditNoteDialog) }
         )

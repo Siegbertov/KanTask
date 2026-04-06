@@ -1,7 +1,6 @@
-package com.s1g1.kantask.viewmodel
+package com.s1g1.kantask.viewmodel.note
 
 import com.s1g1.kantask.database.notes.NoteEntity
-
 
 sealed interface NoteEvent {
 

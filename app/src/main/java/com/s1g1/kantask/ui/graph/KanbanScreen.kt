@@ -12,9 +12,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.s1g1.kantask.database.tasks.KanbanStatus
-import com.s1g1.kantask.viewmodel.TaskEvent
-import com.s1g1.kantask.viewmodel.TaskState
-import com.s1g1.kantask.viewmodel.TaskViewModel
+import com.s1g1.kantask.viewmodel.task.TaskEvent
+import com.s1g1.kantask.viewmodel.task.TaskState
+import com.s1g1.kantask.viewmodel.task.TaskViewModel
 
 @Composable
 fun KanbanScreen(

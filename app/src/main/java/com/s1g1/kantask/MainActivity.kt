@@ -17,10 +17,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import com.s1g1.kantask.ui.MainNavigationSuite
 import com.s1g1.kantask.ui.theme.KanTaskTheme
-import com.s1g1.kantask.viewmodel.NoteViewModel
-import com.s1g1.kantask.viewmodel.NoteViewModelFactory
-import com.s1g1.kantask.viewmodel.TaskViewModel
-import com.s1g1.kantask.viewmodel.TaskViewModelFactory
+import com.s1g1.kantask.viewmodel.note.NoteViewModel
+import com.s1g1.kantask.viewmodel.note.NoteViewModelFactory
+import com.s1g1.kantask.viewmodel.task.TaskViewModel
+import com.s1g1.kantask.viewmodel.task.TaskViewModelFactory
 
 class MainActivity : ComponentActivity() {
     private val tvm by viewModels<TaskViewModel>{

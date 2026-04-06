@@ -22,10 +22,11 @@ import com.s1g1.kantask.ui.components.KanTaskTopBarNS
 import com.s1g1.kantask.ui.components.SnackBarHandler
 import com.s1g1.kantask.ui.graph.DayScreen
 import com.s1g1.kantask.ui.graph.KanbanScreen
-import com.s1g1.kantask.viewmodel.NoteEvent
-import com.s1g1.kantask.viewmodel.NoteViewModel
-import com.s1g1.kantask.viewmodel.TaskEvent
-import com.s1g1.kantask.viewmodel.TaskViewModel
+import com.s1g1.kantask.ui.graph.NoteScreen
+import com.s1g1.kantask.viewmodel.note.NoteEvent
+import com.s1g1.kantask.viewmodel.note.NoteViewModel
+import com.s1g1.kantask.viewmodel.task.TaskEvent
+import com.s1g1.kantask.viewmodel.task.TaskViewModel
 import java.time.LocalDate
 
 
@@ -99,9 +100,9 @@ fun MainNavigationSuite(
             when(currentDestination){
                 MenuDestination.NOTES -> {
                     NoteScreen(
-                        innerPadding=innerPadding,
-                        nvm=nvm,
-                        uiNoteState=uiNoteState
+                        innerPadding = innerPadding,
+                        nvm = nvm,
+                        uiNoteState = uiNoteState
                     )
                 }
                 MenuDestination.CALENDAR -> {

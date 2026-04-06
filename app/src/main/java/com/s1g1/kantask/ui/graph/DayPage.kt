@@ -19,9 +19,9 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.s1g1.kantask.viewmodel.TaskEvent
-import com.s1g1.kantask.viewmodel.TaskState
-import com.s1g1.kantask.viewmodel.TaskViewModel
+import com.s1g1.kantask.viewmodel.task.TaskEvent
+import com.s1g1.kantask.viewmodel.task.TaskState
+import com.s1g1.kantask.viewmodel.task.TaskViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 

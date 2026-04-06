@@ -15,8 +15,8 @@ import com.s1g1.kantask.ui.components.KanTaskTopBar
 import com.s1g1.kantask.ui.components.SnackBarHandler
 import com.s1g1.kantask.ui.graph.DayScreen
 import com.s1g1.kantask.ui.graph.KanbanScreen
-import com.s1g1.kantask.viewmodel.TaskEvent
-import com.s1g1.kantask.viewmodel.TaskViewModel
+import com.s1g1.kantask.viewmodel.task.TaskEvent
+import com.s1g1.kantask.viewmodel.task.TaskViewModel
 import java.time.LocalDate
 
 object Routes {

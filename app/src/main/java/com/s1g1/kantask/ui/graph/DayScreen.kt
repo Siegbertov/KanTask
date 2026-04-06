@@ -13,9 +13,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.s1g1.kantask.viewmodel.TaskEvent
-import com.s1g1.kantask.viewmodel.TaskState
-import com.s1g1.kantask.viewmodel.TaskViewModel
+import com.s1g1.kantask.viewmodel.task.TaskEvent
+import com.s1g1.kantask.viewmodel.task.TaskState
+import com.s1g1.kantask.viewmodel.task.TaskViewModel
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 

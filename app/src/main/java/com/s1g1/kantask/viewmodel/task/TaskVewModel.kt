@@ -1,4 +1,4 @@
-package com.s1g1.kantask.viewmodel
+package com.s1g1.kantask.viewmodel.task
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

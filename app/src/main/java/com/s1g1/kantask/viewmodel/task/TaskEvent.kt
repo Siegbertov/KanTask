@@ -1,4 +1,4 @@
-package com.s1g1.kantask.viewmodel
+package com.s1g1.kantask.viewmodel.task
 
 import com.s1g1.kantask.database.tasks.KanbanStatus
 import com.s1g1.kantask.database.tasks.TaskEntity
