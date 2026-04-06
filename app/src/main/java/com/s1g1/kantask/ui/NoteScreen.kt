@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -24,8 +23,11 @@ fun NoteScreen(
     uiNoteState: NoteState
 ) {
     val allNotes = uiNoteState.notes
+    val isSelectionMode = uiNoteState.selectedNotes.isNotEmpty()
     Column(
-        modifier = Modifier.fillMaxSize().padding(innerPadding),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(innerPadding),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ){
@@ -38,15 +40,28 @@ fun NoteScreen(
                 modifier = Modifier.fillMaxSize()
             ) {
                 items(allNotes){ currentNote ->
-                    Column(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
+                    NoteRow(
+                        currentNote = currentNote,
+                        isSelectionMode = uiNoteState.selectedNotes.isNotEmpty(),
+                        isSelected = uiNoteState.selectedNotes.contains(currentNote),
+                        onRBClick = { currNote ->
+                            nvm.onEvent(NoteEvent.ToggleSelected(noteEntity = currNote))
+                        },
+                        onClickNote = { currNote ->
+                            if (isSelectionMode){
+                                nvm.onEvent(NoteEvent.ToggleSelected(noteEntity = currNote))
+                            } else {
+                                nvm.onEvent(NoteEvent.ShowEditDialog(noteEntity = currNote))
+                            }
+                        },
+                        onLongClickNote = { currNote ->
+                            if (isSelectionMode){
 
-                    ){
-                        Text(currentNote.title, modifier=Modifier.padding(vertical=2.dp))
-                        Text(currentNote.description, modifier=Modifier.padding(vertical=2.dp))
-                    }
+                            } else {
+                                nvm.onEvent(NoteEvent.ToggleSelected(noteEntity = currNote))
+                            }
+                        }
+                    )
                 }
             }
         }
@@ -58,6 +73,15 @@ fun NoteScreen(
                 nvm.onEvent(NoteEvent.AddNote(noteEntity=noteEntity))
             },
             onDismiss = { nvm.onEvent(NoteEvent.ToggleAddNoteDialog) }
+        )
+    }
+    if(uiNoteState.isEditNoteDialogVisible){
+        AddNewOrEditNoteDialog(
+            noteEntity = uiNoteState.noteToEdit,
+            onFinalAction = { noteEntity ->
+                nvm.onEvent(NoteEvent.UpdateNote(noteEntity=noteEntity))
+            },
+            onDismiss = { nvm.onEvent(NoteEvent.ToggleEditNoteDialog) }
         )
     }
 }

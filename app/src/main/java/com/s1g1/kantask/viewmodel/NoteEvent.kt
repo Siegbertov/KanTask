@@ -10,10 +10,9 @@ sealed interface NoteEvent {
     data class DeleteNote(val noteEntity: NoteEntity) : NoteEvent
     data class DeleteNoteById(val noteId: Int) : NoteEvent
     data class DeleteNotes(val notes: List<NoteEntity>) : NoteEvent
-
+    data class ToggleSelected(val noteEntity: NoteEntity) : NoteEvent
     data class ShowEditDialog(val noteEntity: NoteEntity) : NoteEvent
     data class HideEditDialog(val noteEntity: NoteEntity) : NoteEvent
-
     object ToggleAddNoteDialog : NoteEvent
     object ToggleEditNoteDialog : NoteEvent
 

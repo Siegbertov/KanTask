@@ -67,6 +67,17 @@ class NoteViewModel(
                     isEditNoteDialogVisible = false
                     ) }
             }
+            is NoteEvent.ToggleSelected -> {
+                println("TOGGLED ID: ${event.noteEntity.id}")
+                _state.update { it.copy(
+                    selectedNotes = if (it.selectedNotes.contains(event.noteEntity)) {
+                        it.selectedNotes - event.noteEntity
+                    } else {
+                        it.selectedNotes + event.noteEntity
+                    }
+                )}
+            }
+
             NoteEvent.ToggleAddNoteDialog -> {
                 _state.update { it.copy(isAddNoteDialogVisible = !_state.value.isAddNoteDialogVisible) }
             }
