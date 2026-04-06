@@ -15,7 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import com.s1g1.kantask.ui.MainNavGraph
+import com.s1g1.kantask.ui.MainNavigationSuite
 import com.s1g1.kantask.ui.theme.KanTaskTheme
 import com.s1g1.kantask.viewmodel.TaskViewModel
 import com.s1g1.kantask.viewmodel.TaskViewModelFactory
@@ -47,11 +47,16 @@ class MainActivity : ComponentActivity() {
 
             var isDarkTheme by rememberSaveable { mutableStateOf(true) }
             KanTaskTheme(darkTheme = isDarkTheme) {
-                MainNavGraph(
+//                MainNavGraph(
+//                    tvm = tvm,
+//                    isDarkTheme=isDarkTheme,
+//                    onToggleThemeChange={isDarkTheme=!isDarkTheme}
+//                    )
+                MainNavigationSuite(
                     tvm = tvm,
                     isDarkTheme=isDarkTheme,
                     onToggleThemeChange={isDarkTheme=!isDarkTheme}
-                    )
+                )
             }
         }
     }
