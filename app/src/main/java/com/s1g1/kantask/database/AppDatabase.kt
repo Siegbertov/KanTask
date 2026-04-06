@@ -7,6 +7,7 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.s1g1.kantask.database.notes.NOTE_TABLE_NAME
 import com.s1g1.kantask.database.notes.NoteEntity
+import com.s1g1.kantask.database.notes.NoteEntityDao
 import com.s1g1.kantask.database.tasks.KanbanStatus
 import com.s1g1.kantask.database.tasks.Priority
 import com.s1g1.kantask.database.tasks.TASK_TABLE_NAME
@@ -25,6 +26,7 @@ import com.s1g1.kantask.database.tasks.TaskEntityDao
 @TypeConverters(TaskConverters::class)           /* IMPORTANT */
 abstract class AppDatabase : RoomDatabase() {
     abstract fun taskEntityDao(): TaskEntityDao
+    abstract fun noteEntityDao(): NoteEntityDao
 }
 
 val MIGRATION_1_2 = object : Migration(1, 2){

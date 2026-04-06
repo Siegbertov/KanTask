@@ -7,10 +7,11 @@ import android.content.Context
 import android.os.Build
 import androidx.room.Room
 import com.s1g1.kantask.database.AppDatabase
+import com.s1g1.kantask.database.tasks.TaskRepository
+import com.s1g1.kantask.database.notes.NoteRepository
 import com.s1g1.kantask.database.MIGRATION_1_2
 import com.s1g1.kantask.database.MIGRATION_2_3
 import com.s1g1.kantask.database.MIGRATION_3_4
-import com.s1g1.kantask.database.tasks.TaskRepository
 import com.s1g1.kantask.database.MIGRATION_4_5
 import com.s1g1.kantask.service.REMINDER_CHANNEL
 
@@ -31,7 +32,9 @@ class KanTaskApp : Application(){
             .build()
     }
 
-    val repository by lazy { TaskRepository(dao = db.taskEntityDao()) }
+    val taskRepository by lazy { TaskRepository(dao = db.taskEntityDao()) }
+
+    val noteRepository by lazy { NoteRepository(dao = db.noteEntityDao()) }
 
     override fun onCreate() {
         super.onCreate()
