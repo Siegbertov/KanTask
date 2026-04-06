@@ -17,14 +17,23 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import com.s1g1.kantask.ui.MainNavigationSuite
 import com.s1g1.kantask.ui.theme.KanTaskTheme
+import com.s1g1.kantask.viewmodel.NoteViewModel
+import com.s1g1.kantask.viewmodel.NoteViewModelFactory
 import com.s1g1.kantask.viewmodel.TaskViewModel
 import com.s1g1.kantask.viewmodel.TaskViewModelFactory
 
 class MainActivity : ComponentActivity() {
     private val tvm by viewModels<TaskViewModel>{
         val app = application as KanTaskApp
-        TaskViewModelFactory(app.repository, app)
+        TaskViewModelFactory(app.taskRepository, app)
     }
+
+    private val nvm by viewModels<NoteViewModel>{
+        val app = application as KanTaskApp
+        NoteViewModelFactory(app.noteRepository, app)
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -54,6 +63,7 @@ class MainActivity : ComponentActivity() {
 //                    )
                 MainNavigationSuite(
                     tvm = tvm,
+                    nvm=nvm,
                     isDarkTheme=isDarkTheme,
                     onToggleThemeChange={isDarkTheme=!isDarkTheme}
                 )

@@ -69,7 +69,7 @@ fun MainNavGraph(
                     DayScreen(
                         innerPadding = innerPadding,
                         tvm = tvm,
-                        uiState=uiState
+                        uiTaskState=uiState
                     )
                 }
 
@@ -77,7 +77,7 @@ fun MainNavGraph(
                     KanbanScreen(
                         innerPadding = innerPadding,
                         tvm = tvm,
-                        uiState=uiState,
+                        uiTaskState=uiState,
                         snackbarHostState = snackbarHostState
                         )
                 }

@@ -1,9 +1,5 @@
 package com.s1g1.kantask.ui
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Book
 import androidx.compose.material.icons.filled.CalendarMonth
@@ -19,8 +15,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.s1g1.kantask.ui.components.FloatingActionButtonsNS
@@ -28,6 +22,8 @@ import com.s1g1.kantask.ui.components.KanTaskTopBarNS
 import com.s1g1.kantask.ui.components.SnackBarHandler
 import com.s1g1.kantask.ui.graph.DayScreen
 import com.s1g1.kantask.ui.graph.KanbanScreen
+import com.s1g1.kantask.viewmodel.NoteEvent
+import com.s1g1.kantask.viewmodel.NoteViewModel
 import com.s1g1.kantask.viewmodel.TaskEvent
 import com.s1g1.kantask.viewmodel.TaskViewModel
 import java.time.LocalDate
@@ -45,10 +41,13 @@ enum class MenuDestination(
 @Composable
 fun MainNavigationSuite(
     tvm: TaskViewModel,
+    nvm: NoteViewModel,
     isDarkTheme: Boolean,
     onToggleThemeChange: () -> Unit
 ) {
-    val uiState by tvm.state.collectAsStateWithLifecycle()
+    val uiTaskState by tvm.state.collectAsStateWithLifecycle()
+    val uiNoteState by nvm.state.collectAsStateWithLifecycle()
+
     var currentDestination by rememberSaveable { mutableStateOf(MenuDestination.CALENDAR) }
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -87,33 +86,32 @@ fun MainNavigationSuite(
 
             floatingActionButton = {
                 FloatingActionButtonsNS(
-                    onAddTaskClick = { tvm.onEvent(TaskEvent.ToggleAddTaskDialog) },
                     currentDestination = currentDestination,
+                    onAddTaskClick = { tvm.onEvent(TaskEvent.ToggleAddTaskDialog) },
+                    onAddNoteClick = { nvm.onEvent(NoteEvent.ToggleAddNoteDialog) },
                 )
             }
         ){ innerPadding ->
             when(currentDestination){
                 MenuDestination.NOTES -> {
-                    Column(
-                        modifier = Modifier.fillMaxSize().padding(innerPadding),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
-                    ){
-                        Text(currentDestination.label)
-                    }
+                    NoteScreen(
+                        innerPadding=innerPadding,
+                        nvm=nvm,
+                        uiNoteState=uiNoteState
+                    )
                 }
                 MenuDestination.CALENDAR -> {
                     DayScreen(
                         innerPadding = innerPadding,
                         tvm = tvm,
-                        uiState=uiState
+                        uiTaskState=uiTaskState
                     )
                 }
                 MenuDestination.KANBAN -> {
                     KanbanScreen(
                         innerPadding = innerPadding,
                         tvm = tvm,
-                        uiState=uiState,
+                        uiTaskState=uiTaskState,
                         snackbarHostState = snackbarHostState
                     )
                 }

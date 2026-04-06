@@ -20,7 +20,7 @@ import com.s1g1.kantask.viewmodel.TaskViewModel
 fun KanbanScreen(
     innerPadding: PaddingValues,
     tvm: TaskViewModel,
-    uiState: TaskState,
+    uiTaskState: TaskState,
     snackbarHostState: SnackbarHostState
 ) {
     val scope = rememberCoroutineScope()
@@ -37,7 +37,7 @@ fun KanbanScreen(
         KanbanPage(
             snackbarHostState=snackbarHostState,
             kanbanStatus = KanbanStatus.entries[pagerIndex],
-            uiState = uiState,
+            uiState = uiTaskState,
             scope = scope,
             pagerState=pagerState,
             onTaskDropped = { taskEnt, newKanbanStatus ->

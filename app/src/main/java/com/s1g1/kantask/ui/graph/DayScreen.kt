@@ -23,7 +23,7 @@ import java.time.temporal.ChronoUnit
 fun DayScreen(
     innerPadding: PaddingValues,
     tvm: TaskViewModel,
-    uiState: TaskState
+    uiTaskState: TaskState
 ) {
     val pagerState = rememberPagerState(
         initialPage = tvm.dayCount,
@@ -36,8 +36,8 @@ fun DayScreen(
         }
     }
 
-    LaunchedEffect(uiState.selectedDate) {
-        val daysBetween = ChronoUnit.DAYS.between(LocalDate.now(), uiState.selectedDate)
+    LaunchedEffect(uiTaskState.selectedDate) {
+        val daysBetween = ChronoUnit.DAYS.between(LocalDate.now(), uiTaskState.selectedDate)
         val targetPage = tvm.dayCount + daysBetween.toInt()
         if (pagerState.currentPage != targetPage) {
             try {
@@ -64,22 +64,22 @@ fun DayScreen(
                 DayPage(
                     day = dateForPage,
                     tvm = tvm,
-                    uiState = uiState
+                    uiState = uiTaskState
                 )
             }
         }
     }
 
-    if(uiState.isAddTaskDialogVisible){
+    if(uiTaskState.isAddTaskDialogVisible){
         AddNewOrEditTaskDialog(
             taskEnt = null,
             onFinalAction = { taskEnt -> tvm.onEvent(TaskEvent.AddTask(taskEntity = taskEnt)) },
             onDismiss = { tvm.onEvent(TaskEvent.ToggleAddTaskDialog) }
         )
     }
-    if(uiState.isEditTaskDialogVisible){
+    if(uiTaskState.isEditTaskDialogVisible){
         AddNewOrEditTaskDialog(
-            taskEnt = uiState.taskToEdit,
+            taskEnt = uiTaskState.taskToEdit,
             onFinalAction = { taskEnt -> tvm.onEvent(TaskEvent.UpdateTask(taskEntity = taskEnt)) },
             onDismiss = { tvm.onEvent(TaskEvent.ToggleEditTaskDialog) }
         )

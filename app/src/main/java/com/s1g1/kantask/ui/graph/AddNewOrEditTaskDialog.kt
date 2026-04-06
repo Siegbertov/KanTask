@@ -140,8 +140,8 @@ fun AddNewOrEditTaskDialog(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {Text(text = if(taskEnt==null){
-                stringResource(R.string.title_add)
-            }else{stringResource(R.string.title_edit)}) }
+                stringResource(R.string.title_add_task)
+            }else{stringResource(R.string.title_edit_task)}) }
         },
         text = {
             Column(

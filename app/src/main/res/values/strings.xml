@@ -15,8 +15,11 @@
     <string name="button_text_add">ADD</string>
     <string name="button_text_edit">EDIT</string>
 
-    <string name="title_add">ADD TASK</string>
-    <string name="title_edit">EDIT TASK</string>
+    <string name="title_add_task">ADD TASK</string>
+    <string name="title_edit_task">EDIT TASK</string>
+
+    <string name="title_add_note">ADD NOTE</string>
+    <string name="title_edit_note">EDIT NOTE</string>
 
     <string name="title_field_label">Title</string>
     <string name="title_field_placeholder">must have</string>
