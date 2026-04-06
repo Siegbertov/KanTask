@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DarkMode
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.Today
 import androidx.compose.material.icons.filled.Update
@@ -16,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
@@ -30,6 +32,8 @@ fun KanTaskTopBarNS(
     onToggleThemeChange: () -> Unit,
     onPostponeClick: () -> Unit,
     onTodayScroll: () -> Unit,
+    isSelectionMode: Boolean,
+    onDeleteSelected: () -> Unit,
 ) {
     CenterAlignedTopAppBar(
         modifier = Modifier.statusBarsPadding(),
@@ -71,7 +75,22 @@ fun KanTaskTopBarNS(
                     }
                 }
                 MenuDestination.NOTES -> {
-
+                    if(isSelectionMode){
+                        Row(
+                            horizontalArrangement = Arrangement.End,
+                            verticalAlignment = Alignment.CenterVertically
+                        ){
+                            IconButton(onClick = {
+                                onDeleteSelected()
+                            }){
+                                Icon(
+                                    imageVector = Icons.Default.Delete,
+                                    contentDescription = null,
+                                    tint = Color.Red
+                                    )
+                            }
+                        }
+                    }
                 }
                 MenuDestination.KANBAN -> {
 
@@ -79,5 +98,4 @@ fun KanTaskTopBarNS(
             }
         }
     )
-
 }

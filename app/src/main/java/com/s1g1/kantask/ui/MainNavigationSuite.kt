@@ -70,12 +70,15 @@ fun MainNavigationSuite(
     )
     {
         Scaffold(
-            topBar={ KanTaskTopBarNS(
-                currentDestination=currentDestination,
-                isDarkTheme=isDarkTheme,
-                onToggleThemeChange={onToggleThemeChange()},
-                onPostponeClick = {tvm.onEvent(TaskEvent.PostponeUndoneFromPast(today = LocalDate.now()))},
-                onTodayScroll = {tvm.onEvent(TaskEvent.SetToday)}
+            topBar={
+                KanTaskTopBarNS(
+                    currentDestination = currentDestination,
+                    isDarkTheme = isDarkTheme,
+                    onToggleThemeChange = { onToggleThemeChange() },
+                    onPostponeClick = { tvm.onEvent(TaskEvent.PostponeUndoneFromPast(today = LocalDate.now())) },
+                    onTodayScroll = { tvm.onEvent(TaskEvent.SetToday) },
+                    isSelectionMode = uiNoteState.selectedNotes.isNotEmpty(),
+                    onDeleteSelected = { nvm.onEvent(NoteEvent.ToggleDeleteSelected) }
             ) },
 
             snackbarHost = {
@@ -87,6 +90,7 @@ fun MainNavigationSuite(
             floatingActionButton = {
                 FloatingActionButtonsNS(
                     currentDestination = currentDestination,
+                    isSelectionMode = uiNoteState.selectedNotes.isNotEmpty(),
                     onAddTaskClick = { tvm.onEvent(TaskEvent.ToggleAddTaskDialog) },
                     onAddNoteClick = { nvm.onEvent(NoteEvent.ToggleAddNoteDialog) },
                 )

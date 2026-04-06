@@ -16,19 +16,22 @@ import com.s1g1.kantask.ui.MenuDestination
 @Composable
 fun FloatingActionButtonsNS(
     currentDestination: MenuDestination,
+    isSelectionMode: Boolean,
     onAddTaskClick: () -> Unit,
     onAddNoteClick: () -> Unit
 ) {
     when(currentDestination){
         MenuDestination.NOTES -> {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(4.dp),
-                verticalAlignment = Alignment.Bottom
-            ){
-                FloatingActionButton(
-                    onClick = { onAddNoteClick() },
-                    modifier = Modifier.size(50.dp)
-                ) {Icon(imageVector = Icons.Default.Add, contentDescription = "Add Task") }
+            if(!isSelectionMode){
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    verticalAlignment = Alignment.Bottom
+                ){
+                    FloatingActionButton(
+                        onClick = { onAddNoteClick() },
+                        modifier = Modifier.size(50.dp)
+                    ) {Icon(imageVector = Icons.Default.Add, contentDescription = "Add Task") }
+                }
             }
         }
         MenuDestination.CALENDAR -> {

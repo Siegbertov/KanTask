@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class NoteViewModel(
     private val repository: NoteRepository,
@@ -68,7 +69,6 @@ class NoteViewModel(
                     ) }
             }
             is NoteEvent.ToggleSelected -> {
-                println("TOGGLED ID: ${event.noteEntity.id}")
                 _state.update { it.copy(
                     selectedNotes = if (it.selectedNotes.contains(event.noteEntity)) {
                         it.selectedNotes - event.noteEntity
@@ -83,6 +83,17 @@ class NoteViewModel(
             }
             NoteEvent.ToggleEditNoteDialog -> {
                 _state.update { it.copy(isEditNoteDialogVisible = !_state.value.isEditNoteDialogVisible) }
+            }
+
+            NoteEvent.ToggleDeleteSelected -> {
+                viewModelScope.launch(Dispatchers.IO){
+                    repository.deleteNotes(notes = _state.value.selectedNotes)
+                    withContext(Dispatchers.Main){
+                        _state.update{
+                            it.copy(selectedNotes = emptyList())
+                        }
+                    }
+                }
             }
         }
     }
