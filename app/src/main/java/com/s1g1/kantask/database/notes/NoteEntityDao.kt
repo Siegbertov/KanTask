@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface NoteEntityDao {
 
-    @Query("SELECT * FROM $NOTE_TABLE_NAME ORDER BY timestamp DESC")
+    @Query("SELECT * FROM $NOTE_TABLE_NAME ORDER BY pinned DESC, timestamp DESC")
     fun getAllNotes(): Flow<List<NoteEntity>>
 
     @Query("SELECT * FROM $NOTE_TABLE_NAME WHERE id=:id")

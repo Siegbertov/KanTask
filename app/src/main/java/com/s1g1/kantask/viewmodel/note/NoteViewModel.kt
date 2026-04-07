@@ -95,6 +95,13 @@ class NoteViewModel(
                     }
                 }
             }
+
+            NoteEvent.ToggleUpdatePinStateSelected -> {
+                viewModelScope.launch(Dispatchers.IO) {
+                    val selectedIds = _state.value.selectedNotes.map{ it.id }
+                    repository.updateNotesPinState(ids = selectedIds)
+                }
+            }
         }
     }
 }

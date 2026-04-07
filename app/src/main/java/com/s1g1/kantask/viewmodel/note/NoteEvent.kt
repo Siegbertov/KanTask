@@ -15,5 +15,6 @@ sealed interface NoteEvent {
     object ToggleAddNoteDialog : NoteEvent
     object ToggleEditNoteDialog : NoteEvent
     object ToggleDeleteSelected : NoteEvent
+    object ToggleUpdatePinStateSelected : NoteEvent
 
 }

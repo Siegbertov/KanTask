@@ -7,6 +7,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.LightMode
+import androidx.compose.material.icons.filled.PushPin
 import androidx.compose.material.icons.filled.Today
 import androidx.compose.material.icons.filled.Update
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -34,6 +35,7 @@ fun KanTaskTopBarNS(
     onTodayScroll: () -> Unit,
     isSelectionMode: Boolean,
     onDeleteSelected: () -> Unit,
+    onUpdatePinStateSelected: () -> Unit,
 ) {
     CenterAlignedTopAppBar(
         modifier = Modifier.statusBarsPadding(),
@@ -80,6 +82,16 @@ fun KanTaskTopBarNS(
                             horizontalArrangement = Arrangement.End,
                             verticalAlignment = Alignment.CenterVertically
                         ){
+                            IconButton(onClick = {
+                                onUpdatePinStateSelected()
+                            }){
+                                Icon(
+                                    imageVector = Icons.Default.PushPin,
+                                    contentDescription = null,
+                                    tint = Color.Yellow
+                                )
+                            }
+
                             IconButton(onClick = {
                                 onDeleteSelected()
                             }){

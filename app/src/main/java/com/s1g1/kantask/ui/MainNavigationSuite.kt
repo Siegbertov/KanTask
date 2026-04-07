@@ -79,7 +79,8 @@ fun MainNavigationSuite(
                     onPostponeClick = { tvm.onEvent(TaskEvent.PostponeUndoneFromPast(today = LocalDate.now())) },
                     onTodayScroll = { tvm.onEvent(TaskEvent.SetToday) },
                     isSelectionMode = uiNoteState.selectedNotes.isNotEmpty(),
-                    onDeleteSelected = { nvm.onEvent(NoteEvent.ToggleDeleteSelected) }
+                    onDeleteSelected = { nvm.onEvent(NoteEvent.ToggleDeleteSelected) },
+                    onUpdatePinStateSelected = { nvm.onEvent(NoteEvent.ToggleUpdatePinStateSelected) },
             ) },
 
             snackbarHost = {
