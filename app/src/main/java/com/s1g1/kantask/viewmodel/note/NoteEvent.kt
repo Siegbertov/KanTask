@@ -14,7 +14,10 @@ sealed interface NoteEvent {
     data class HideEditDialog(val noteEntity: NoteEntity) : NoteEvent
     object ToggleAddNoteDialog : NoteEvent
     object ToggleEditNoteDialog : NoteEvent
+
+    object UnSelect : NoteEvent
     object ToggleDeleteSelected : NoteEvent
     object ToggleUpdatePinStateSelected : NoteEvent
+
 
 }

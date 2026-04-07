@@ -107,6 +107,12 @@ class NoteViewModel(
                     }
                 }
             }
+
+            NoteEvent.UnSelect -> {
+                _state.update{
+                    it.copy(selectedNotes = emptyList())
+                }
+            }
         }
     }
 }

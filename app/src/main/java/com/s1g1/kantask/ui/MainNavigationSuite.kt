@@ -95,6 +95,7 @@ fun MainNavigationSuite(
                     isSelectionMode = uiNoteState.selectedNotes.isNotEmpty(),
                     onAddTaskClick = { tvm.onEvent(TaskEvent.ToggleAddTaskDialog) },
                     onAddNoteClick = { nvm.onEvent(NoteEvent.ToggleAddNoteDialog) },
+                    onUnSelect = {nvm.onEvent(NoteEvent.UnSelect)},
                 )
             }
         ){ innerPadding ->

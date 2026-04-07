@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
@@ -18,20 +19,21 @@ fun FloatingActionButtonsNS(
     currentDestination: MenuDestination,
     isSelectionMode: Boolean,
     onAddTaskClick: () -> Unit,
-    onAddNoteClick: () -> Unit
+    onAddNoteClick: () -> Unit,
+    onUnSelect: () -> Unit
 ) {
     when(currentDestination){
         MenuDestination.NOTES -> {
-            if(!isSelectionMode){
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
-                    verticalAlignment = Alignment.Bottom
-                ){
-                    FloatingActionButton(
-                        onClick = { onAddNoteClick() },
-                        modifier = Modifier.size(50.dp)
-                    ) {Icon(imageVector = Icons.Default.Add, contentDescription = "Add Task") }
-                }
+            FloatingActionButton(
+                onClick = {
+                    if(isSelectionMode){onUnSelect()} else {onAddNoteClick()}
+                          },
+                modifier = Modifier.size(50.dp)
+            ) {
+                Icon(
+                    imageVector = if(isSelectionMode){Icons.Default.Clear} else {Icons.Default.Add},
+                    contentDescription = null,
+                )
             }
         }
         MenuDestination.CALENDAR -> {
