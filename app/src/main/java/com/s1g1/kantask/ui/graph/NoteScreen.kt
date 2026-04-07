@@ -84,4 +84,14 @@ fun NoteScreen(
             onDismiss = { nvm.onEvent(NoteEvent.ToggleEditNoteDialog) }
         )
     }
+    if(uiNoteState.isColorPaletteDialogVisible){
+        SelectColorDialog(
+            onColorSelected = { newColor ->
+                nvm.onEvent(NoteEvent.PaintNotes(newColor=newColor))
+            },
+            onDismiss = {
+                nvm.onEvent(NoteEvent.TogglePalette)
+            }
+        )
+    }
 }

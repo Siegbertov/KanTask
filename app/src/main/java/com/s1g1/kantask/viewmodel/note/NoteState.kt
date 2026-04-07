@@ -8,4 +8,5 @@ data class NoteState(
     val noteToEdit: NoteEntity? = null,
     val isAddNoteDialogVisible: Boolean = false,
     val isEditNoteDialogVisible: Boolean = false,
+    val isColorPaletteDialogVisible: Boolean = false,
 )

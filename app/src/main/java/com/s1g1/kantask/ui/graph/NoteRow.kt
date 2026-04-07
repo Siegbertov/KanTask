@@ -59,6 +59,7 @@ fun NoteRow(
                 shape = cardShape
             )
             .clip(cardShape)
+            .background(color = currentNote.color.clr)
             .combinedClickable(
                 onClick = { onClickNote(currentNote) },
                 onLongClick = { onLongClickNote(currentNote) }
@@ -112,6 +113,7 @@ fun NoteRow(
                     Text(
                         currentNote.title,
                         fontWeight = FontWeight.Black,
+                        color=Color.Black,
                         modifier=Modifier
                             .padding(vertical=2.dp)
                     )
@@ -122,6 +124,7 @@ fun NoteRow(
                 ){
                     Text(
                         currentNote.description,
+                        color=Color.Black,
                         modifier=Modifier.padding(8.dp)
                     )
                 }

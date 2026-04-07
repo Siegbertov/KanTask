@@ -81,6 +81,7 @@ fun MainNavigationSuite(
                     isSelectionMode = uiNoteState.selectedNotes.isNotEmpty(),
                     onDeleteSelected = { nvm.onEvent(NoteEvent.ToggleDeleteSelected) },
                     onUpdatePinStateSelected = { nvm.onEvent(NoteEvent.ToggleUpdatePinStateSelected) },
+                    onPaletteClicked = { nvm. onEvent(NoteEvent.TogglePalette) },
             ) },
 
             snackbarHost = {

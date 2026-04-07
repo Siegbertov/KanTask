@@ -108,9 +108,27 @@ class NoteViewModel(
                 }
             }
 
+            is NoteEvent.PaintNotes -> {
+                viewModelScope.launch(Dispatchers.IO) {
+                    val selectedIds = _state.value.selectedNotes.map{ it.id }
+                    repository.updateNotesColor(ids = selectedIds, newColor = event.newColor)
+                    withContext(Dispatchers.Main){
+                        _state.update{
+                            it.copy(selectedNotes = emptyList())
+                        }
+                    }
+                }
+            }
+
             NoteEvent.UnSelect -> {
                 _state.update{
                     it.copy(selectedNotes = emptyList())
+                }
+            }
+
+            NoteEvent.TogglePalette -> {
+                _state.update{
+                    it.copy(isColorPaletteDialogVisible = !it.isColorPaletteDialogVisible)
                 }
             }
         }
