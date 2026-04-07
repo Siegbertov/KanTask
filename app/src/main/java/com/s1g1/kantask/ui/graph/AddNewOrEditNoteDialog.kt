@@ -23,6 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import com.s1g1.kantask.R
+import com.s1g1.kantask.database.notes.NoteColor
 import com.s1g1.kantask.database.notes.NoteEntity
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -90,13 +91,15 @@ fun AddNewOrEditNoteDialog(
         },
         confirmButton = {
             OutlinedButton(onClick = {
-                if (formState.title.isNotBlank()){
+                if (formState.title.isNotBlank() && (noteEntity?.title != formState.title || noteEntity.description != formState.description)){
                     onFinalAction(
                         NoteEntity(
                             id = if(noteEntity!=null){noteEntity.id}else{0},
                             title = formState.title,
                             description = formState.description,
-                            timestamp = formState.timestamp
+                            timestamp = formState.timestamp,
+                            pinned = if(noteEntity!=null) {noteEntity.pinned} else {false},
+                            color = if(noteEntity!=null) {noteEntity.color} else {NoteColor.getDefault()}
                         )
                     )
                     onDismiss()
