@@ -35,7 +35,7 @@ fun NoteScreen(
             Text("NO NOTES")
         } else {
             LazyColumn(
-                contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
+                contentPadding = PaddingValues(start = 8.dp, top=8.dp, end=8.dp, bottom = 80.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier.fillMaxSize()
             ) {
