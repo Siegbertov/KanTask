@@ -6,6 +6,8 @@ import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.s1g1.kantask.database.notes.NOTE_TABLE_NAME
+import com.s1g1.kantask.database.notes.NoteColor
+import com.s1g1.kantask.database.notes.NoteConverters
 import com.s1g1.kantask.database.notes.NoteEntity
 import com.s1g1.kantask.database.notes.NoteEntityDao
 import com.s1g1.kantask.database.tasks.KanbanStatus
@@ -20,10 +22,15 @@ import com.s1g1.kantask.database.tasks.TaskEntityDao
         TaskEntity::class,
         NoteEntity::class,
                ],
-    version = 6,
+    version = 7,
     exportSchema = true
 )
-@TypeConverters(TaskConverters::class)           /* IMPORTANT */
+@TypeConverters(
+    value = [
+        TaskConverters::class,
+        NoteConverters::class
+    ]
+)           /* IMPORTANT */
 abstract class AppDatabase : RoomDatabase() {
     abstract fun taskEntityDao(): TaskEntityDao
     abstract fun noteEntityDao(): NoteEntityDao
@@ -63,5 +70,11 @@ val MIGRATION_4_5 = object : Migration(4, 5){
 val MIGRATION_5_6 = object : Migration(5, 6){
     override fun migrate(db: SupportSQLiteDatabase){
         db.execSQL("ALTER TABLE $NOTE_TABLE_NAME ADD COLUMN pinned INTEGER NOT NULL DEFAULT 0")
+    }
+}
+
+val MIGRATION_6_7 = object : Migration(6, 7){
+    override fun migrate(db: SupportSQLiteDatabase){
+        db.execSQL("ALTER TABLE $NOTE_TABLE_NAME ADD COLUMN color TEXT NOT NULL DEFAULT '${NoteColor.getDefault().name}'")
     }
 }

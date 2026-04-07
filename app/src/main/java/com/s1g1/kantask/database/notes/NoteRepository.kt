@@ -29,4 +29,8 @@ class NoteRepository(private val dao: NoteEntityDao) {
     suspend fun updateNotesPinState(ids: List<Int>){
         return dao.updateNotesPinState(ids=ids)
     }
+
+    suspend fun updateNotesColor(ids: List<Int>, newColor: NoteColor){
+        return dao.updateNotesColor(ids=ids, newColor=newColor)
+    }
 }
