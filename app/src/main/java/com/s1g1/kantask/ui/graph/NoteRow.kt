@@ -20,6 +20,7 @@ import androidx.compose.material.icons.filled.PushPin
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -55,7 +56,7 @@ fun NoteRow(
             .padding(4.dp)
             .border(
                 width = 2.dp,
-                color = MaterialTheme.colorScheme.outline,
+                color = Color.Transparent,
                 shape = cardShape
             )
             .clip(cardShape)
@@ -80,54 +81,18 @@ fun NoteRow(
                 verticalArrangement = Arrangement.Center
 
             ){
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                ){
-                    if (currentNote.pinned){
-                        Icon(
-                            imageVector = Icons.Default.PushPin,
-                            contentDescription = null,
-                            modifier = Modifier.padding(horizontal = 8.dp)
-                        )
-                    }
-                    Spacer( modifier = Modifier.weight(1f) )
-                    Text(
-                        text = "Last updated:\n ${formattedDate}",
-                        modifier = Modifier
-                            .padding(horizontal = 6.dp, vertical = 2.dp)
-                            .background(
-                                color=Color(0xFF808080),
-                                shape = RoundedCornerShape(4.dp)
-                                )
-                            .padding(4.dp),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = Color.White,
-                        textAlign = TextAlign.End
-                    )
-                }
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center,
-                ){
-                    Text(
-                        currentNote.title,
-                        fontWeight = FontWeight.Black,
-                        color=Color.Black,
-                        modifier=Modifier
-                            .padding(vertical=2.dp)
-                    )
-                }
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Start
-                ){
-                    Text(
-                        currentNote.description,
-                        color=Color.Black,
-                        modifier=Modifier.padding(8.dp)
-                    )
-                }
+                NoteRowStatusesComponent(
+                    isPinned = currentNote.pinned,
+                    formattedDate = formattedDate
+                )
+
+                NoteRowTitleComponent(
+                    title = currentNote.title
+                )
+
+                NoteRowDescriptionComponent(
+                    description = currentNote.description
+                )
             }
             if(isSelectionMode){
                 Surface(
@@ -140,10 +105,83 @@ fun NoteRow(
                         selected = isSelected,
                         onClick = {
                             onRBClick(currentNote)
-                        }
+                        },
+                        colors = RadioButtonDefaults.colors(
+                            selectedColor = Color.Black,
+                            unselectedColor = Color.Gray
+                        )
                     )
                 }
             }
         }
     }
 }
+
+@Composable
+fun NoteRowStatusesComponent(
+    isPinned: Boolean,
+    formattedDate: String
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ){
+        if (isPinned){
+            Icon(
+                imageVector = Icons.Default.PushPin,
+                contentDescription = null,
+                tint=Color.Black,
+                modifier = Modifier.padding(horizontal = 8.dp)
+            )
+        }
+        Spacer( modifier = Modifier.weight(1f) )
+        Text(
+            text = "Last updated:\n $formattedDate",
+            modifier = Modifier
+                .padding(horizontal = 6.dp, vertical = 2.dp)
+                .background(
+                    color=Color(0xFF808080),
+                    shape = RoundedCornerShape(4.dp)
+                )
+                .padding(4.dp),
+            style = MaterialTheme.typography.labelSmall,
+            color = Color.White,
+            textAlign = TextAlign.End
+        )
+    }
+}
+
+@Composable
+fun NoteRowTitleComponent(
+    title: String
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center,
+    ){
+        Text(
+            text = title,
+            fontWeight = FontWeight.Black,
+            color=Color.Black,
+            modifier=Modifier
+                .padding(vertical=2.dp)
+        )
+    }
+}
+
+@Composable
+fun NoteRowDescriptionComponent(
+    description: String
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Start
+    ){
+        Text(
+            text = description,
+            color=Color.Black,
+            modifier=Modifier.padding(8.dp)
+        )
+    }
+}
+
