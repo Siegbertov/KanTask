@@ -25,4 +25,8 @@ class NoteRepository(private val dao: NoteEntityDao) {
     suspend fun deleteNoteById(id: Int){
         return dao.deleteNoteById(id=id)
     }
+
+    suspend fun updateNotesPinState(ids: List<Int>){
+        return dao.updateNotesPinState(ids=ids)
+    }
 }

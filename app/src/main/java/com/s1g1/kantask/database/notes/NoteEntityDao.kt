@@ -28,4 +28,7 @@ interface NoteEntityDao {
     @Query("DELETE FROM $NOTE_TABLE_NAME WHERE id = :id")
     suspend fun deleteNoteById(id: Int)
 
+    @Query("UPDATE $NOTE_TABLE_NAME SET pinned=1-pinned WHERE id IN (:ids)")
+    suspend fun updateNotesPinState(ids: List<Int>)
+
 }

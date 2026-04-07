@@ -12,4 +12,10 @@ data class NoteEntity(
     val title: String = "",
     val description: String = "",
     val timestamp: Long,
+
+    val pinned: Boolean = false,
 )
+
+// TODO - pinned
+// TODO - color
+

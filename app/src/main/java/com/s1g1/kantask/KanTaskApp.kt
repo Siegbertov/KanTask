@@ -13,6 +13,7 @@ import com.s1g1.kantask.database.MIGRATION_1_2
 import com.s1g1.kantask.database.MIGRATION_2_3
 import com.s1g1.kantask.database.MIGRATION_3_4
 import com.s1g1.kantask.database.MIGRATION_4_5
+import com.s1g1.kantask.database.MIGRATION_5_6
 import com.s1g1.kantask.service.REMINDER_CHANNEL
 
 
@@ -27,7 +28,8 @@ class KanTaskApp : Application(){
                 MIGRATION_1_2,
                 MIGRATION_2_3,
                 MIGRATION_3_4,
-                MIGRATION_4_5
+                MIGRATION_4_5,
+                MIGRATION_5_6
             )
             .build()
     }

@@ -20,7 +20,7 @@ import com.s1g1.kantask.database.tasks.TaskEntityDao
         TaskEntity::class,
         NoteEntity::class,
                ],
-    version = 5,
+    version = 6,
     exportSchema = true
 )
 @TypeConverters(TaskConverters::class)           /* IMPORTANT */
@@ -57,5 +57,11 @@ val MIGRATION_4_5 = object : Migration(4, 5){
                 `timestamp` INTEGER NOT NULL
             )
         """.trimIndent())
+    }
+}
+
+val MIGRATION_5_6 = object : Migration(5, 6){
+    override fun migrate(db: SupportSQLiteDatabase){
+        db.execSQL("ALTER TABLE $NOTE_TABLE_NAME ADD COLUMN pinned INTEGER NOT NULL DEFAULT 0")
     }
 }
