@@ -100,6 +100,11 @@ class NoteViewModel(
                 viewModelScope.launch(Dispatchers.IO) {
                     val selectedIds = _state.value.selectedNotes.map{ it.id }
                     repository.updateNotesPinState(ids = selectedIds)
+                    withContext(Dispatchers.Main){
+                        _state.update{
+                            it.copy(selectedNotes = emptyList())
+                        }
+                    }
                 }
             }
         }

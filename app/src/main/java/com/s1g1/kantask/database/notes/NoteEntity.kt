@@ -16,6 +16,5 @@ data class NoteEntity(
     val pinned: Boolean = false,
 )
 
-// TODO - pinned
 // TODO - color
 

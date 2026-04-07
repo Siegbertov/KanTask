@@ -1,5 +1,6 @@
 package com.s1g1.kantask.ui.graph
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
@@ -7,12 +8,16 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.PushPin
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Surface
@@ -22,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.s1g1.kantask.database.notes.NoteEntity
@@ -75,31 +81,50 @@ fun NoteRow(
             ){
                 Row(
                     modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    if (currentNote.pinned){
+                        Icon(
+                            imageVector = Icons.Default.PushPin,
+                            contentDescription = null,
+                            modifier = Modifier.padding(horizontal = 8.dp)
+                        )
+                    }
+                    Spacer( modifier = Modifier.weight(1f) )
+                    Text(
+                        text = "Last updated:\n ${formattedDate}",
+                        modifier = Modifier
+                            .padding(horizontal = 6.dp, vertical = 2.dp)
+                            .background(
+                                color=Color(0xFF808080),
+                                shape = RoundedCornerShape(4.dp)
+                                )
+                            .padding(4.dp),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = Color.White,
+                        textAlign = TextAlign.End
+                    )
+                }
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center,
                 ){
-                    Text(currentNote.title, modifier=Modifier.padding(vertical=2.dp))
+                    Text(
+                        currentNote.title,
+                        fontWeight = FontWeight.Black,
+                        modifier=Modifier
+                            .padding(vertical=2.dp)
+                    )
                 }
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Start
                 ){
-                    Text(currentNote.description, modifier=Modifier.padding(vertical=2.dp))
+                    Text(
+                        currentNote.description,
+                        modifier=Modifier.padding(8.dp)
+                    )
                 }
-            }
-            Surface(
-                modifier = Modifier
-                    .padding(4.dp)
-                    .align(Alignment.TopEnd),
-                shape = RoundedCornerShape(4.dp),
-                color = Color(0xFF808080)
-            ) {
-                Text(
-                    text = "Last updated:\n ${formattedDate}",
-                    modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = Color.White,
-                    textAlign = TextAlign.End
-                )
             }
             if(isSelectionMode){
                 Surface(
