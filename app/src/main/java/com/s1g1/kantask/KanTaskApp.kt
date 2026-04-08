@@ -7,14 +7,9 @@ import android.content.Context
 import android.os.Build
 import androidx.room.Room
 import com.s1g1.kantask.database.AppDatabase
+import com.s1g1.kantask.database.DatabaseMigrations
 import com.s1g1.kantask.database.tasks.TaskRepository
 import com.s1g1.kantask.database.notes.NoteRepository
-import com.s1g1.kantask.database.MIGRATION_1_2
-import com.s1g1.kantask.database.MIGRATION_2_3
-import com.s1g1.kantask.database.MIGRATION_3_4
-import com.s1g1.kantask.database.MIGRATION_4_5
-import com.s1g1.kantask.database.MIGRATION_5_6
-import com.s1g1.kantask.database.MIGRATION_6_7
 import com.s1g1.kantask.service.REMINDER_CHANNEL
 
 
@@ -26,12 +21,7 @@ class KanTaskApp : Application(){
             klass = AppDatabase::class.java,
             name="tasks.db")
             .addMigrations(
-                MIGRATION_1_2,
-                MIGRATION_2_3,
-                MIGRATION_3_4,
-                MIGRATION_4_5,
-                MIGRATION_5_6,
-                MIGRATION_6_7
+                *DatabaseMigrations.ALL_MIGRATIONS
             )
             .build()
     }
