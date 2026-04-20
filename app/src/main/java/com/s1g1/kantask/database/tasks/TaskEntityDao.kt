@@ -28,4 +28,13 @@ interface TaskEntityDao {
             SET day = :today  
                 WHERE day < :today AND isDone = 0""")
     suspend fun postponeUndoneFromPast(today: LocalDate)
+
+    @Query(
+        """
+        UPDATE $TASK_TABLE_NAME
+            SET day = :newDate
+                WHERE id = :taskId"""
+    )
+    suspend fun postponeTaskToNewDate(taskId: Long, newDate: LocalDate)
+
 }

@@ -17,4 +17,8 @@ class TaskRepository(private val dao: TaskEntityDao) {
 
     suspend fun postponeUndoneFromPast(today: LocalDate) = dao.postponeUndoneFromPast(today=today)
 
+    suspend fun postponeTaskToNewDate(taskId: Long, newDate: LocalDate){
+        dao.postponeTaskToNewDate(taskId = taskId, newDate = newDate)
+    }
+
 }

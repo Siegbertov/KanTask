@@ -101,16 +101,24 @@ class TaskViewModel(
             }
             is TaskEvent.ToggleTaskStatus -> {
                 viewModelScope.launch {
-                    if (event.taskEntity.isDone){
-                        repository.upsertTask(event.taskEntity.copy(
-                            isDone = false,
-                            kanbanStatus = KanbanStatus.Todo
-                        ))
+                    if (event.taskEntity.repeatEveryNDays == 0){
+                        if (event.taskEntity.isDone){
+                            repository.upsertTask(event.taskEntity.copy(
+                                isDone = false,
+                                kanbanStatus = KanbanStatus.Todo
+                            ))
+                        } else {
+                            repository.upsertTask(event.taskEntity.copy(
+                                isDone = true,
+                                kanbanStatus = KanbanStatus.Done
+                            ))
+                        }
                     } else {
-                        repository.upsertTask(event.taskEntity.copy(
-                            isDone = true,
-                            kanbanStatus = KanbanStatus.Done
-                        ))
+                        val currentDay = event.taskEntity.day
+                        repository.postponeTaskToNewDate(
+                            taskId = event.taskEntity.id,
+                            newDate = currentDay.plusDays( event.taskEntity.repeatEveryNDays.toLong() )
+                        )
                     }
                 }
             }
