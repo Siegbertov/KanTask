@@ -19,6 +19,7 @@ import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.DoubleArrow
 import androidx.compose.material.icons.filled.NotificationsActive
 import androidx.compose.material.icons.filled.NotificationsOff
+import androidx.compose.material.icons.filled.Repeat
 import androidx.compose.material.icons.filled.Task
 import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material3.AlertDialog
@@ -88,7 +89,9 @@ data class TaskFormState(
 
     val kanbanStatus: KanbanStatus = KanbanStatus.Todo,
     val priority: Priority = Priority.None,
-    val shouldNotify: Boolean = false
+    val shouldNotify: Boolean = false,
+
+    val repeatEveryNDays: String = "0",
 ){
     fun fromTask(taskEntity: TaskEntity) : TaskFormState{
         return this.copy(
@@ -102,7 +105,8 @@ data class TaskFormState(
 
             kanbanStatus = taskEntity.kanbanStatus,
             priority = taskEntity.priority,
-            shouldNotify = taskEntity.shouldNotify
+            shouldNotify = taskEntity.shouldNotify,
+            repeatEveryNDays = taskEntity.repeatEveryNDays.toString()
         )
     }
 }
@@ -177,6 +181,14 @@ fun AddNewOrEditTaskDialog(
                     onChanged = {formState = formState.copy(duration=it)}
                 )
 
+                RepeatEveryNDaysComponent(
+                    modifier = Modifier.fillMaxWidth(),
+                    currentRepeatEveryNDays = formState.repeatEveryNDays,
+                    onRENDaysChange = { newRENDays->
+                        formState = formState.copy(repeatEveryNDays = newRENDays)
+                    }
+                )
+
                 TaskPriorityComponent(
                     modifier = Modifier.fillMaxWidth(),
                     currentPriority = formState.priority,
@@ -224,6 +236,7 @@ fun AddNewOrEditTaskDialog(
                             kanbanStatus = formState.kanbanStatus,
                             priority = formState.priority,
                             shouldNotify = formState.shouldNotify,
+                            repeatEveryNDays = if(formState.repeatEveryNDays.isNotEmpty()) formState.repeatEveryNDays.toInt() else 0
                         )
                     )
                     onDismiss()
@@ -235,6 +248,45 @@ fun AddNewOrEditTaskDialog(
             }
         }
     )
+}
+
+@Composable
+fun RepeatEveryNDaysComponent(
+    modifier: Modifier,
+    currentRepeatEveryNDays: String,
+    onRENDaysChange: (String) -> Unit
+) {
+    Row(
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+    ){
+        OutlinedTextField(
+            value = currentRepeatEveryNDays,
+            onValueChange = {
+                onRENDaysChange(it)
+            },
+            label = { Text(stringResource(R.string.repeat_every_n_days_field_label))},
+            leadingIcon = { Icon(imageVector = Icons.Default.Repeat, contentDescription = null) },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            trailingIcon = {
+                if(currentRepeatEveryNDays.isNotEmpty()){
+                    Icon(
+                        imageVector = Icons.Default.Clear,
+                        contentDescription = null,
+                        Modifier.combinedClickable(
+                            onClick={},
+                            onLongClick={onRENDaysChange("0")}
+                        )
+                    )
+                }
+            },
+            isError = (currentRepeatEveryNDays.isEmpty()),
+            singleLine = true,
+            maxLines = 1,
+            modifier = Modifier.weight(1f)
+        )
+    }
 }
 
 @Composable
@@ -369,7 +421,8 @@ fun TaskDurationField(
     Row(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier){
+        modifier = modifier
+    ){
         OutlinedTextField(
             value = duration,
             onValueChange = {onChanged(it)},
@@ -390,6 +443,8 @@ fun TaskDurationField(
                 }
             },
             isError = (duration.isNotBlank() && (duration.toIntOrNull()==null || duration.contains("-"))),
+            singleLine = true,
+            maxLines = 1,
             modifier = Modifier.weight(1f)
         )
     }
@@ -445,6 +500,8 @@ fun TaskTitleField(
             errorLabelColor = Color.Green.copy(alpha = 0.5f),
             errorBorderColor = Color.Green.copy(alpha = 0.5f),
         ),
+        singleLine = true,
+        maxLines = 1,
         modifier = modifier,
         supportingText = {
             Box(modifier=Modifier.fillMaxWidth()){

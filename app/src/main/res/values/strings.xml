@@ -30,4 +30,6 @@
     <string name="description_field_label">Description</string>
     <string name="description_field_placeholder">optional</string>
 
+    <string name="repeat_every_n_days_field_label">Repeat Every N Days</string>
+
 </resources>
