@@ -22,6 +22,8 @@ data class TaskEntity(
     val kanbanStatus: KanbanStatus = KanbanStatus.Todo,
     val priority: Priority = Priority.None,
     val shouldNotify: Boolean = false,
+
+    val repeatEveryNDays: Int = 0
 )
 
 enum class Priority(

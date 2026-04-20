@@ -52,8 +52,15 @@ object DatabaseMigrations {
             override fun migrate(db: SupportSQLiteDatabase){
                 db.execSQL("ALTER TABLE $NOTE_TABLE_NAME ADD COLUMN color TEXT NOT NULL DEFAULT '${NoteColor.getDefault().name}'")
             }
-        }
+        },
+
+        object : Migration(7, 8){
+            override fun migrate(db: SupportSQLiteDatabase){
+                db.execSQL("ALTER TABLE $TASK_TABLE_NAME ADD COLUMN repeatEveryNDays INTEGER NOT NULL DEFAULT 0")
+            }
+        },
+
     )
 
-    const val LATEST_VERSION = 7
+    const val LATEST_VERSION = 8
 }
