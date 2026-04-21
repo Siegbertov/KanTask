@@ -1,6 +1,7 @@
 package com.s1g1.kantask
 
 import android.Manifest
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
@@ -15,12 +16,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import com.s1g1.kantask.ui.ACTION_ADD_NEW_NOTE
+import com.s1g1.kantask.ui.ACTION_ADD_NEW_TASK
 import com.s1g1.kantask.ui.MainNavigationSuite
 import com.s1g1.kantask.ui.theme.KanTaskTheme
 import com.s1g1.kantask.viewmodel.note.NoteViewModel
 import com.s1g1.kantask.viewmodel.note.NoteViewModelFactory
 import com.s1g1.kantask.viewmodel.task.TaskViewModel
 import com.s1g1.kantask.viewmodel.task.TaskViewModelFactory
+import com.s1g1.kantask.ui.MenuDestination
+import com.s1g1.kantask.viewmodel.note.NoteEvent
+import com.s1g1.kantask.viewmodel.task.TaskEvent
 
 class MainActivity : ComponentActivity() {
     private val tvm by viewModels<TaskViewModel>{
@@ -32,6 +38,8 @@ class MainActivity : ComponentActivity() {
         val app = application as KanTaskApp
         NoteViewModelFactory(app.noteRepository, app)
     }
+
+    private var currentDestination by mutableStateOf(MenuDestination.CALENDAR)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,19 +63,18 @@ class MainActivity : ComponentActivity() {
             }
 
             var isDarkTheme by rememberSaveable { mutableStateOf(true) }
+
             KanTaskTheme(darkTheme = isDarkTheme) {
-//                MainNavGraph(
-//                    tvm = tvm,
-//                    isDarkTheme=isDarkTheme,
-//                    onToggleThemeChange={isDarkTheme=!isDarkTheme}
-//                    )
                 MainNavigationSuite(
+                    currentDestination = currentDestination,
                     tvm = tvm,
-                    nvm=nvm,
-                    isDarkTheme=isDarkTheme,
-                    onToggleThemeChange={isDarkTheme=!isDarkTheme}
+                    nvm = nvm,
+                    isDarkTheme = isDarkTheme,
+                    onToggleThemeChange = { isDarkTheme = !isDarkTheme },
+                    setNewDDestination = { newDest -> currentDestination = newDest }
                 )
             }
         }
     }
+
 }

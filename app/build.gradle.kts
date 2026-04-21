@@ -66,6 +66,9 @@ dependencies {
 
     implementation(libs.androidx.work.runtime.ktx)
 
+    implementation("androidx.glance:glance-appwidget:1.1.1") // WIDGETS (p1)
+    implementation("androidx.glance:glance-material3:1.1.1") // WIDGETS (p2)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
