@@ -45,6 +45,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        handleIntent(intent)
+
         setContent {
 
             /* TODO REFACTOR PERMISSION ACCESS  */
@@ -73,6 +76,26 @@ class MainActivity : ComponentActivity() {
                     onToggleThemeChange = { isDarkTheme = !isDarkTheme },
                     setNewDDestination = { newDest -> currentDestination = newDest }
                 )
+            }
+        }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        handleIntent(intent)
+    }
+
+    private fun handleIntent(intent: Intent?){
+        when(intent?.action){
+            ACTION_ADD_NEW_NOTE -> {
+                currentDestination = MenuDestination.NOTES
+                nvm.onEvent(event = NoteEvent.ToggleAddNoteDialog)
+            }
+
+            ACTION_ADD_NEW_TASK -> {
+                currentDestination = MenuDestination.CALENDAR
+                tvm.onEvent( event = TaskEvent.ToggleAddTaskDialog )
             }
         }
     }
