@@ -27,8 +27,10 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".widget.NoteWidgetReceiver"
-            android:exported="true">
+        <receiver
+            android:name=".widget.NoteWidgetReceiver"
+            android:exported="true"
+            android:label="Add Note">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -37,14 +39,28 @@
                 android:resource="@xml/note_widget_info" />
         </receiver>
 
-        <receiver android:name=".widget.TaskWidgetReceiver"
-            android:exported="true">
+        <receiver
+            android:name=".widget.TaskWidgetReceiver"
+            android:exported="true"
+            android:label="Add Task">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/task_widget_info" />
+        </receiver>
+
+        <receiver
+            android:name=".widget.DayTasksWidgetReceiver"
+            android:exported="true"
+            android:label="Day Tasks">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/day_tasks_info" />
         </receiver>
 
     </application>
