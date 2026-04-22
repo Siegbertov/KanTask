@@ -37,4 +37,7 @@ interface TaskEntityDao {
     )
     suspend fun postponeTaskToNewDate(taskId: Long, newDate: LocalDate)
 
+    @Query("UPDATE $TASK_TABLE_NAME SET isDone = NOT isDone WHERE id=:taskId")
+    suspend fun toggleTaskDoneById(taskId: Long)
+
 }

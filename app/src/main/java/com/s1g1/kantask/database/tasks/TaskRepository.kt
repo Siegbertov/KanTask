@@ -21,4 +21,6 @@ class TaskRepository(private val dao: TaskEntityDao) {
         dao.postponeTaskToNewDate(taskId = taskId, newDate = newDate)
     }
 
+    suspend fun toggleTaskDoneById(taskId: Long) = dao.toggleTaskDoneById(taskId = taskId)
+
 }
