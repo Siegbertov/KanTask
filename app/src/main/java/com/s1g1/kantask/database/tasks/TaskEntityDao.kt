@@ -17,6 +17,9 @@ interface TaskEntityDao {
     @Query("""SELECT * FROM $TASK_TABLE_NAME WHERE day=(:day) ORDER BY isDone ASC, (time IS NULL) ASC, time ASC, priority DESC""")
     fun getTasksByDay(day: LocalDate): Flow<List<TaskEntity>>
 
+    @Query("""SELECT * FROM $TASK_TABLE_NAME WHERE day=(:day) ORDER BY isDone ASC, (time IS NULL) ASC, time ASC, priority DESC""")
+    fun getTasksByDayDirect(day: LocalDate): List<TaskEntity>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsertTask(taskEntity: TaskEntity) : Long
 
@@ -38,6 +41,8 @@ interface TaskEntityDao {
     suspend fun postponeTaskToNewDate(taskId: Long, newDate: LocalDate)
 
     @Query("UPDATE $TASK_TABLE_NAME SET isDone = NOT isDone WHERE id=:taskId")
-    suspend fun toggleTaskDoneById(taskId: Long)
+    suspend fun toggleTaskDoneByIdInsideWidget(taskId: Long) : Int
+    @Query("SELECT * FROM $TASK_TABLE_NAME WHERE id=(:taskId)")
+    suspend fun getTaskById(taskId: Long): TaskEntity
 
 }

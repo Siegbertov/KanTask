@@ -12,6 +12,7 @@ sealed interface TaskEvent {
     data class DeleteTask(val taskEntity: TaskEntity) : TaskEvent
     data class ToggleTaskStatus(val taskEntity: TaskEntity) : TaskEvent
     data class ShowEditDialog(val taskEntity: TaskEntity) : TaskEvent
+    data class ShowEditDialogById(val taskId: Long) : TaskEvent
     data class HideEditDialog(val taskEntity: TaskEntity) : TaskEvent
     data class UpdateTaskKanbanStatus(val taskEntity: TaskEntity, val newKanbanStatus: KanbanStatus) : TaskEvent
     data class PostponeUndoneFromPast(val today: LocalDate) : TaskEvent

@@ -163,6 +163,15 @@ class TaskViewModel(
                 }
             }
 
+            is TaskEvent.ShowEditDialogById -> {
+                viewModelScope.launch {
+                    val currentTask = repository.getTaskById(taskId = event.taskId)
+                    _state.update{
+                        it.copy(taskToEdit = currentTask, isEditTaskDialogVisible = true)
+                    }
+                }
+            }
+
             is TaskEvent.ShowEditDialog -> {
                 _state.update{it.copy(taskToEdit = event.taskEntity, isEditTaskDialogVisible = true)
                 }
@@ -183,6 +192,8 @@ class TaskViewModel(
                 isProgrammaticScroll = false
                 _state.update { it.copy(selectedDate = LocalDate.now()) }
             }
+
+
         }
     }
 }

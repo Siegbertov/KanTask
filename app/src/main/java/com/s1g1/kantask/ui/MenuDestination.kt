@@ -17,3 +17,4 @@ enum class MenuDestination(
 
 const val ACTION_ADD_NEW_NOTE = "com.s1g1.kantask.ADD_NEW_NOTE"
 const val ACTION_ADD_NEW_TASK = "com.s1g1.kantask.ADD_NEW_TASK"
+const val ACTION_OPEN_TASK = "com.s1g1.kantask.OPEN_TASK"
