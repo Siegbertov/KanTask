@@ -1,6 +1,7 @@
 package com.s1g1.kantask.viewmodel.task
 
 import android.app.Application
+import androidx.glance.appwidget.updateAll
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -15,6 +16,7 @@ import com.s1g1.kantask.database.tasks.KanbanStatus
 import com.s1g1.kantask.database.tasks.TaskEntity
 import com.s1g1.kantask.database.tasks.TaskRepository
 import com.s1g1.kantask.service.TaskReminderWorker
+import com.s1g1.kantask.widget.DayTasksWidget
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -73,6 +75,13 @@ class TaskViewModel(
         }
     }
 
+    private fun updateWidget(){
+        val context = getApplication<Application>().applicationContext
+        viewModelScope.launch {
+            DayTasksWidget().updateAll(context)
+        }
+    }
+
     fun onEvent(event: TaskEvent){
         when(event){
             is TaskEvent.AddTask -> {
@@ -80,18 +89,21 @@ class TaskViewModel(
                     val newId = repository.upsertTask(taskEntity = event.taskEntity)
                     scheduleNotificationWithWorkManager(event.taskEntity.copy(id = newId))
                 }
+                updateWidget()
             }
             is TaskEvent.UpdateTask -> {
                 viewModelScope.launch {
                     repository.upsertTask(taskEntity = event.taskEntity)
                     scheduleNotificationWithWorkManager(event.taskEntity)
                 }
+                updateWidget()
             }
             is TaskEvent.DeleteTask -> {
                 viewModelScope.launch {
                     repository.deleteTask(taskEntity = event.taskEntity)
                     workManager.cancelUniqueWork(event.taskEntity.id.toString())
                 }
+                updateWidget()
             }
             is TaskEvent.OnPageChanged -> {
                 _state.update { it.copy(
@@ -121,6 +133,7 @@ class TaskViewModel(
                         )
                     }
                 }
+                updateWidget()
             }
 
             is TaskEvent.UpdateTaskKanbanStatus -> {
@@ -155,12 +168,14 @@ class TaskViewModel(
                         }
                     }
                 }
+                updateWidget()
             }
 
             is TaskEvent.PostponeUndoneFromPast -> {
                 viewModelScope.launch {
                     repository.postponeUndoneFromPast(today = event.today)
                 }
+                updateWidget()
             }
 
             is TaskEvent.ShowEditDialogById -> {
@@ -192,8 +207,6 @@ class TaskViewModel(
                 isProgrammaticScroll = false
                 _state.update { it.copy(selectedDate = LocalDate.now()) }
             }
-
-
         }
     }
 }
