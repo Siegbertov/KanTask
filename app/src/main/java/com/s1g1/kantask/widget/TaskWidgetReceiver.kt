@@ -5,6 +5,6 @@ import androidx.glance.appwidget.GlanceAppWidgetReceiver
 
 class TaskWidgetReceiver : GlanceAppWidgetReceiver(){
 
-    override val glanceAppWidget: GlanceAppWidget = TaskWidget()
+    override val glanceAppWidget: GlanceAppWidget = TaskWidget
 
 }

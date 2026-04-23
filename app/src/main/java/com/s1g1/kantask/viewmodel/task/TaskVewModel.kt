@@ -78,7 +78,7 @@ class TaskViewModel(
     private fun updateWidget(){
         val context = getApplication<Application>().applicationContext
         viewModelScope.launch {
-            DayTasksWidget().updateAll(context)
+            DayTasksWidget.updateAll(context)
         }
     }
 

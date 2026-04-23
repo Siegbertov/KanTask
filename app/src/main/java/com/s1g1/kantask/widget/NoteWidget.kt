@@ -20,7 +20,7 @@ import com.s1g1.kantask.MainActivity
 import com.s1g1.kantask.R
 import com.s1g1.kantask.ui.ACTION_ADD_NEW_NOTE
 
-class NoteWidget : GlanceAppWidget() {
+object NoteWidget : GlanceAppWidget() {
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         provideContent {

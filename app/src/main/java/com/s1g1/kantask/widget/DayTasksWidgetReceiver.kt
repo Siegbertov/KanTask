@@ -5,6 +5,6 @@ import androidx.glance.appwidget.GlanceAppWidgetReceiver
 
 class DayTasksWidgetReceiver : GlanceAppWidgetReceiver() {
 
-    override val glanceAppWidget : GlanceAppWidget = DayTasksWidget()
+    override val glanceAppWidget : GlanceAppWidget = DayTasksWidget
 
 }

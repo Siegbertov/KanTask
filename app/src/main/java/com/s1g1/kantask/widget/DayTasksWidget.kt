@@ -46,11 +46,9 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class DayTasksWidget : GlanceAppWidget() {
+object DayTasksWidget : GlanceAppWidget() {
 
-    companion object {
-        const val EXTRA_TASK_ID = "EXTRA_TASK_ID"
-    }
+    const val EXTRA_TASK_ID = "EXTRA_TASK_ID"
 
     private suspend fun fetchFreshTasks(
         context: Context, selectedDay:
@@ -184,7 +182,7 @@ class ToggleTaskCheckboxAction : ActionCallback{
         val repository = (context.applicationContext as KanTaskApp).taskRepository
         val isSuccess = repository.toggleTaskDoneByIdInsideWidget(taskId = taskId)
         if(isSuccess){
-            DayTasksWidget().update(context, glanceId)
+            DayTasksWidget.update(context, glanceId)
             Log.d("GlanceUpdate", "[taskId: ${taskId}] - Update called at ${System.currentTimeMillis()}")
         }
     }

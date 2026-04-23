@@ -20,7 +20,7 @@ import com.s1g1.kantask.MainActivity
 import com.s1g1.kantask.R
 import com.s1g1.kantask.ui.ACTION_ADD_NEW_TASK
 
-class TaskWidget : GlanceAppWidget() {
+object TaskWidget : GlanceAppWidget() {
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         provideContent {
