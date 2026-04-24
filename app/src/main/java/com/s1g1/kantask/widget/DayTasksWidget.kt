@@ -2,14 +2,18 @@ package com.s1g1.kantask.widget
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.util.Log
+import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.glance.ColorFilter
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
+import androidx.glance.GlanceTheme.colors
 import androidx.glance.action.ActionParameters
 import androidx.glance.action.actionParametersOf
 import androidx.glance.appwidget.GlanceAppWidget
@@ -41,11 +45,18 @@ import androidx.glance.appwidget.cornerRadius
 import androidx.glance.layout.Box
 import com.s1g1.kantask.MainActivity
 import androidx.glance.appwidget.action.actionStartActivity
+import androidx.glance.layout.size
+import androidx.glance.text.FontStyle
+import androidx.glance.text.FontWeight
+import androidx.glance.text.TextStyle
 import com.s1g1.kantask.ui.ACTION_OPEN_TASK
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import androidx.glance.action.actionStartActivity
+import androidx.glance.text.TextDecoration
 
+const val WIDGET_TAG = "GlanceUpdate"
 object DayTasksWidget : GlanceAppWidget() {
 
     const val EXTRA_TASK_ID = "EXTRA_TASK_ID"
@@ -56,6 +67,7 @@ object DayTasksWidget : GlanceAppWidget() {
         Boolean = false
     ) : List<TaskEntity>{
         val repository = (context.applicationContext as KanTaskApp).taskRepository
+        Log.d(WIDGET_TAG, "Fetching data at ${System.currentTimeMillis()}")
         return withContext(Dispatchers.IO)
         {
             if (direct){
@@ -68,14 +80,19 @@ object DayTasksWidget : GlanceAppWidget() {
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         val todayDay = LocalDate.now()
-        val dayTasks = fetchFreshTasks(context=context, selectedDay=todayDay, direct=false)
 
         provideContent {
             GlanceTheme {
+                val dayTasks = produceState(
+                    initialValue = emptyList(),
+                    key1 = System.currentTimeMillis()
+                ){
+                    value = fetchFreshTasks(context = context, selectedDay = todayDay, direct=true)
+                }
                 MyContent(
                     context = context,
                     day = todayDay,
-                    tasks = dayTasks,
+                    tasks = dayTasks.value,
                 )
             }
         }
@@ -87,32 +104,46 @@ object DayTasksWidget : GlanceAppWidget() {
         Box(
             contentAlignment = Alignment.TopEnd,
             modifier = GlanceModifier
+                .then(
+                    if (Build.VERSION.SDK_INT >= 31) {
+                        GlanceModifier
+                            .background(colors.widgetBackground)
+                            .cornerRadius(16.dp)
+                    }
+                    else {
+                        GlanceModifier.background(
+                            ImageProvider(R.drawable.rounded_24dp),
+                            colorFilter = ColorFilter.tint(colors.widgetBackground)
+                        )
+                    }
+                )
+                .padding(8.dp)
         ){
             Column(
                 modifier = GlanceModifier
-                    .background(Color.DarkGray.copy(alpha = 0.8f))
                     .fillMaxSize()
                     .padding(12.dp)
             ){
-                WidgetTitleRow( day = day )
-                TasksWidgetColumn( context = context, tasks = tasks )
+                TitleRow( day = day )
+                TasksLazyColumn( context = context, tasks = tasks )
             }
             Image(
                 provider = ImageProvider(R.drawable.ic_refresh),
                 contentDescription = null,
+                colorFilter = ColorFilter.tint(colors.onSurface),
                 modifier = GlanceModifier
                     .cornerRadius(12.dp)
                     .padding(4.dp)
                     .clickable{
+                        Log.d(WIDGET_TAG, "Clicked on refresh icon at ${System.currentTimeMillis()}")
                         scope.launch { this@DayTasksWidget.updateAll(context) }
-                        Log.d("GlanceUpdate", "Update called at ${System.currentTimeMillis()}")
                     }
             )
         }
     }
 
     @Composable
-    private fun WidgetTitleRow(day: LocalDate){
+    private fun TitleRow(day: LocalDate){
         Row(
             horizontalAlignment = Alignment.Horizontal.CenterHorizontally,
             verticalAlignment = Alignment.Vertical.CenterVertically,
@@ -120,15 +151,45 @@ object DayTasksWidget : GlanceAppWidget() {
                 .fillMaxWidth()
 
         ){
-            Text(
-                modifier = GlanceModifier,
-                text = day.format(DateTimeFormatter.ofPattern("dd MMM")).uppercase(),
-            )
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = GlanceModifier
+                    .size(30.dp)
+                    .background(ImageProvider(R.drawable.widget_background))
+                    .clickable( actionStartActivity<MainActivity>() )
+                    .cornerRadius(16.dp)
+            ) {
+                Image(
+                    provider = ImageProvider(R.drawable.ic_launcher_foreground),
+                    contentDescription = "App Icon",
+                    colorFilter = ColorFilter.tint(colors.inverseOnSurface),
+                    modifier = GlanceModifier
+                        .size(40.dp)
+                        .cornerRadius(12.dp)
+                        .padding(4.dp)
+                )
+            }
+
+            Row(
+                horizontalAlignment = Alignment.Horizontal.CenterHorizontally,
+                modifier = GlanceModifier
+                    .fillMaxWidth()
+            ){
+                Text(
+                    modifier = GlanceModifier,
+                    text = day.format(DateTimeFormatter.ofPattern("dd MMM")).uppercase(),
+                    style = TextStyle(
+                        color = colors.onSurface,
+                        fontSize = typography.titleMedium.fontSize,
+                        fontWeight = FontWeight.Bold
+                    ),
+                )
+            }
         }
     }
 
     @Composable
-    private fun TasksWidgetColumn( context: Context,  tasks: List<TaskEntity> ){
+    private fun TasksLazyColumn(context: Context, tasks: List<TaskEntity> ){
         LazyColumn(
             modifier = GlanceModifier
                 .fillMaxWidth()
@@ -160,7 +221,12 @@ object DayTasksWidget : GlanceAppWidget() {
                     )
                     Text(
                         text=currentTask.title,
-                        modifier = GlanceModifier.background(Color.Green.copy(alpha = 0.7f))
+                        modifier = GlanceModifier,
+                        style = TextStyle(
+                            color = colors.onSurface,
+                            fontStyle = FontStyle.Italic,
+                            textDecoration = if (currentTask.isDone) TextDecoration.LineThrough else TextDecoration.None
+                        ),
                     )
                 }
             }
@@ -182,8 +248,9 @@ class ToggleTaskCheckboxAction : ActionCallback{
         val repository = (context.applicationContext as KanTaskApp).taskRepository
         val isSuccess = repository.toggleTaskDoneByIdInsideWidget(taskId = taskId)
         if(isSuccess){
-            DayTasksWidget.update(context, glanceId)
-            Log.d("GlanceUpdate", "[taskId: ${taskId}] - Update called at ${System.currentTimeMillis()}")
+            Log.d(WIDGET_TAG, "Clicked on checkbox for [taskId: ${taskId}] at ${System.currentTimeMillis()}")
+//            DayTasksWidget.update(context, glanceId)
+            DayTasksWidget.updateAll(context)
         }
     }
 }
