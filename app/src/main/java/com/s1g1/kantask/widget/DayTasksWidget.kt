@@ -9,6 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.unit.dp
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.glance.ColorFilter
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
@@ -54,9 +56,12 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import androidx.glance.action.actionStartActivity
+import androidx.glance.appwidget.state.updateAppWidgetState
+import androidx.glance.currentState
 import androidx.glance.text.TextDecoration
 
 const val WIDGET_TAG = "GlanceUpdate"
+val OFFSET_KEY = intPreferencesKey("date_offset")
 object DayTasksWidget : GlanceAppWidget() {
 
     const val EXTRA_TASK_ID = "EXTRA_TASK_ID"
@@ -79,19 +84,22 @@ object DayTasksWidget : GlanceAppWidget() {
     }
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
-        val todayDay = LocalDate.now()
-
         provideContent {
+
+            val prefs = currentState<Preferences>()
+            val offset = prefs[OFFSET_KEY] ?: 0
+            val selectedDay = LocalDate.now().plusDays(offset.toLong())
+
             GlanceTheme {
                 val dayTasks = produceState(
                     initialValue = emptyList(),
                     key1 = System.currentTimeMillis()
                 ){
-                    value = fetchFreshTasks(context = context, selectedDay = todayDay, direct=true)
+                    value = fetchFreshTasks(context = context, selectedDay = selectedDay, direct=true)
                 }
                 MyContent(
                     context = context,
-                    day = todayDay,
+                    day = selectedDay,
                     tasks = dayTasks.value,
                 )
             }
@@ -172,9 +180,24 @@ object DayTasksWidget : GlanceAppWidget() {
 
             Row(
                 horizontalAlignment = Alignment.Horizontal.CenterHorizontally,
+                verticalAlignment = Alignment.Vertical.CenterVertically,
                 modifier = GlanceModifier
                     .fillMaxWidth()
             ){
+                Image(
+                    provider = ImageProvider(R.drawable.ic_arrow_left),
+                    contentDescription = "Decrease Day",
+                    colorFilter = ColorFilter.tint(colors.onSurface),
+                    modifier = GlanceModifier
+                        .size(40.dp)
+                        .cornerRadius(12.dp)
+                        .padding(4.dp)
+                        .clickable(
+                            actionRunCallback<ChangeDateAction>(
+                                actionParametersOf(ChangeDateAction.DeltaKey to -1)
+                            )
+                        )
+                )
                 Text(
                     modifier = GlanceModifier,
                     text = day.format(DateTimeFormatter.ofPattern("dd MMM")).uppercase(),
@@ -183,6 +206,20 @@ object DayTasksWidget : GlanceAppWidget() {
                         fontSize = typography.titleMedium.fontSize,
                         fontWeight = FontWeight.Bold
                     ),
+                )
+                Image(
+                    provider = ImageProvider(R.drawable.ic_arrow_right),
+                    contentDescription = "Increase Day",
+                    colorFilter = ColorFilter.tint(colors.onSurface),
+                    modifier = GlanceModifier
+                        .size(40.dp)
+                        .cornerRadius(12.dp)
+                        .padding(4.dp)
+                        .clickable(
+                            actionRunCallback<ChangeDateAction>(
+                                actionParametersOf( ChangeDateAction.DeltaKey to 1)
+                            )
+                        )
                 )
             }
         }
@@ -252,5 +289,26 @@ class ToggleTaskCheckboxAction : ActionCallback{
 //            DayTasksWidget.update(context, glanceId)
             DayTasksWidget.updateAll(context)
         }
+    }
+}
+
+class ChangeDateAction : ActionCallback{
+
+    companion object {
+        val DeltaKey = ActionParameters.Key<Int>("delta_key")
+    }
+
+    override suspend fun onAction(
+        context: Context,
+        glanceId: GlanceId,
+        parameters: ActionParameters
+    ) {
+        val increment = parameters[DeltaKey] ?: 0
+
+        updateAppWidgetState( context, glanceId) { prefs ->
+            val current = prefs[OFFSET_KEY] ?: 0
+            prefs[OFFSET_KEY] = current + increment
+        }
+        DayTasksWidget.updateAll(context)
     }
 }
